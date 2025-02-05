@@ -14,8 +14,9 @@ var (
 )
 
 func InitDB() {
+	// https://www.mongodb.com/zh-cn/docs/drivers/go/current/usage-examples/
 	client, _ = mongo.Connect(options.Client().ApplyURI(config.GlobalConfig.Mongo.Uri))
 	MainDB = client.Database(config.GlobalConfig.Mongo.DB)
 	fmt.Println("Connected to MongoDB!", client.NumberSessionsInProgress(), MainDB.Name())
-	werror.PanicError(buildPostIndex())
+	werror.PanicError(buildUserIndex(), buildPostIndex())
 }
