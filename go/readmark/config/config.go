@@ -14,6 +14,7 @@ type AppConfig struct {
 
 type AppMongoConfig struct {
 	Uri string `yaml:"uri"`
+	DB  string `yaml:"db"`
 }
 
 func Init(f string) {

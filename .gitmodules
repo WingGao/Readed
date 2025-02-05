@@ -1,0 +1,3 @@
+[submodule "go/lib-webutils"]
+	path = go/lib-webutils
+	url = git@github.com:WingGao/webutils.git

@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"github.com/gofiber/fiber/v3"
-	"readed/config"
-	"readed/db"
+	"readmark/config"
+	"readmark/db"
 )
 
 var (

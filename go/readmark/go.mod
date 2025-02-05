@@ -1,6 +1,6 @@
-module readed
+module readmark
 
-go 1.23.5
+go 1.23
 
 require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
@@ -35,6 +35,6 @@ require (
 	github.com/WingGao/webutils v0.0.0
 )
 
-replace (
-	github.com/WingGao/webutils => ../webutils
-)
+//replace (
+//	github.com/WingGao/webutils => ../webutils
+//)
