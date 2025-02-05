@@ -13,7 +13,7 @@ var (
 	MainDB *mongo.Database
 )
 
-func Init() {
+func InitDB() {
 	client, _ = mongo.Connect(options.Client().ApplyURI(config.GlobalConfig.Mongo.Uri))
 	MainDB = client.Database(config.GlobalConfig.Mongo.DB)
 	fmt.Println("Connected to MongoDB!", client.NumberSessionsInProgress(), MainDB.Name())

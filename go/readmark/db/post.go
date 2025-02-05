@@ -8,14 +8,14 @@ import (
 )
 
 type Post struct {
-	ID                 bson.ObjectID `bson:"_id"`
-	Site               string        `bson:"Site"`
-	Path               string        `bson:"Path"`
-	Pid                int           `bson:"Pid"`    // 站内文章ID
-	PidStr             *string       `bson:"PidStr"` // 站内文章ID字符串
-	UpdatedAt          time.Time     `bson:"UpdateAt"`
-	ReadLastReplyId    int           `bson:"ReadLastReplyId"`    // 最后一次读取的回复ID
-	ReadLastReplyIndex int           `bson:"ReadLastReplyIndex"` // 最后一次读取的回复的序号
+	ID                 bson.ObjectID `bson:"_id" json:",omitempty"`
+	Site               string        `bson:"Site" json:",omitempty"`
+	Path               string        `bson:"Path" json:",omitempty"`
+	Pid                int           `bson:"Pid" json:",omitempty"`    // 站内文章ID,要求site范围内唯一
+	PidStr             *string       `bson:"PidStr" json:",omitempty"` // 站内文章ID字符串
+	UpdatedAt          time.Time     `bson:"UpdateAt" json:",omitempty"`
+	ReadLastReplyId    int           `bson:"ReadLastReplyId" json:",omitempty"`    // 最后一次读取的回复ID
+	ReadLastReplyIndex int           `bson:"ReadLastReplyIndex" json:",omitempty"` // 最后一次读取的回复的序号
 }
 
 func (p *Post) C() *mongo.Collection {
