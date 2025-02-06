@@ -4,14 +4,13 @@ import (
 	"fmt"
 	"github.com/WingGao/webutils/wbson"
 	"github.com/WingGao/webutils/werror"
-	"github.com/gofiber/fiber/v3"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	. "readmark/db"
 	"time"
 )
 
-func handlePostMark(c fiber.Ctx) *Post {
+func handlePostMark(c *FiberCtxExt) *Post {
 	_, uid := assertSession(c)
 	req := ParseJson(c, &Post{})
 	werror.PanicError(
@@ -38,6 +37,24 @@ func handlePostMark(c fiber.Ctx) *Post {
 	old.UpdatedAt = time.Now()
 	old.ReadLastReplyId = req.ReadLastReplyId
 	old.ReadLastReplyIndex = req.ReadLastReplyIndex
+	old.ReadLastReplyTime = req.ReadLastReplyTime
 	old.C().UpdateByID(c.Context(), old.ID, bson.D{{"$set", old}}, options.UpdateOne().SetUpsert(true))
 	return old
+}
+
+type PostSearchReq struct {
+	Site    string
+	PidList []int `json:",int"`
+}
+
+// 查询用户的文章
+func handlePostSearch(c *FiberCtxExt) []Post {
+	req := ParseJson(c, &PostSearchReq{})
+	var posts []Post
+	cur, _ := (&Post{}).C().Find(c.Context(), bson.D{
+		{"UserID", c.Uid()}, {"Site", req.Site},
+		{"Pid", bson.D{{"$in", req.PidList}}},
+	})
+	cur.All(c.Context(), &posts)
+	return posts
 }

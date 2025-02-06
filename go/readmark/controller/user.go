@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/WingGao/webutils/wbson"
 	"github.com/WingGao/webutils/werror"
-	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/session"
 	"github.com/gookit/goutil/errorx"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -11,7 +10,7 @@ import (
 	. "readmark/model"
 )
 
-func handleUserLogin(c fiber.Ctx) LoginResp {
+func handleUserLogin(c *FiberCtxExt) LoginResp {
 	req := ParseForm(c, &User{})
 	werror.PanicError(
 		validate.Var(req.Username, "required"),
@@ -30,7 +29,7 @@ func handleUserLogin(c fiber.Ctx) LoginResp {
 	}
 }
 
-func handleUserInfo(c fiber.Ctx) User {
+func handleUserInfo(c *FiberCtxExt) User {
 	_, uid := assertSession(c)
 	return User{ID: wbson.NewObjectIdHex(uid)}
 }

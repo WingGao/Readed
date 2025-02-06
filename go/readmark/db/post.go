@@ -17,7 +17,8 @@ type Post struct {
 	UpdatedAt          time.Time     `bson:"UpdateAt" json:",omitempty"`
 	ReadLastReplyId    int           `bson:"ReadLastReplyId" json:",omitempty"`    // 最后一次读取的回复ID
 	ReadLastReplyIndex int           `bson:"ReadLastReplyIndex" json:",omitempty"` // 最后一次读取的回复的序号
-	MarkBanned         *bool         `bson:"MarkDeleted" json:",omitempty"`        // 标记为不看
+	ReadLastReplyTime  *time.Time    `bson:"ReadLastReplyTime" json:",omitempty"`
+	MarkBanned         *bool         `bson:"MarkDeleted" json:",omitempty"` // 标记为不看
 }
 
 func (p *Post) C() *mongo.Collection {
