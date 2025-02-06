@@ -9,6 +9,7 @@ import (
 var GlobalConfig *AppConfig
 
 type AppConfig struct {
+	Addr  string         `yaml:"addr"`
 	Mongo AppMongoConfig `yaml:"mongo"`
 	Redis AppRedisConfig `yaml:"redis"`
 }

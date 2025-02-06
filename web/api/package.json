@@ -1,0 +1,13 @@
+{
+  "name": "@wingao/readmark-api",
+  "private": true,
+  "type": "module",
+  "scripts": {},
+  "main": "src/index.ts",
+  "dependencies": {
+    "parse-domain": "^8.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

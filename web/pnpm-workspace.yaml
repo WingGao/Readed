@@ -1,0 +1,5 @@
+packages:
+  - api
+#  - siterules
+#  - userscript
+  - userscript-react

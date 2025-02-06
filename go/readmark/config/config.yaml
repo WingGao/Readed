@@ -1,4 +1,4 @@
-
+addr: ":29000"
 mongo:
   uri: "mongodb://localhost:27017"
   db: "go_readed"

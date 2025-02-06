@@ -57,5 +57,5 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 	controller.Init(app)
-	app.Listen(":29000")
+	app.Listen(config.GlobalConfig.Addr)
 }
