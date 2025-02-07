@@ -1,9 +1,9 @@
 import {createContext} from "react";
-import {ISiteMatchResult} from "@wingao/review-vault-siterules/src";
+import {ISiteMatcher} from "../sites/_base";
 
 // @ts-ignore
 export const UserContext = createContext<{
     rootNode: HTMLElement,
-    matchedRules: ISiteMatchResult[]
+    matchedRules: ISiteMatcher[]
 }>(null);
 UserContext.displayName = 'UserContext';

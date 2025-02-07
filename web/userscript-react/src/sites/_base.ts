@@ -1,10 +1,19 @@
+import {IStore} from "../utils/store";
+
 const hostMap = new Map<string, ISiteMatcher[]>()
 
 
-interface ISiteMatcher {
+export interface ISiteMatcher {
   hosts: string[]
 
   match(url: URL): boolean
+
+  /**
+   * 判断需要加载那个View
+   */
+  mount(): string
+
+  buildPostViewData(): IStore['postViewData']
 }
 
 export abstract class BaseSiteRule {
@@ -12,7 +21,7 @@ export abstract class BaseSiteRule {
   }
 }
 
-export function registerRule(...rules: ISiteMatcher[]){
+export function registerRule(...rules: ISiteMatcher[]) {
   for (const rule of rules) {
     for (const host of rule.hosts) {
       const rules = hostMap.get(host)

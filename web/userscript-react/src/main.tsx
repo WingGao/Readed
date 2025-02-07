@@ -5,10 +5,11 @@ import {StyleProvider,} from '@ant-design/cssinjs';
 import App from './App';
 import indexCss from './index.css?inline';
 import {UserContext} from "./utils";
-import {initApi} from "./api";
+import {initApiClient} from "./api";
 import {notification} from "antd";
 import {useMount, useThrottle, useWhyDidYouUpdate} from "ahooks";
 import {matchRules} from './sites'
+import useAppStore from "./utils/store";
 
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(indexCss);
@@ -39,29 +40,6 @@ const MyRawRoot = (props) => {
         </div>
     </UserContext.Provider>
 }
-const MyRoot = () => {
-    const sheets = [sheet]
-    const nodeRoot = useRef(null)
-    const [isLoad, setLoad] = useState(false)
-    // useEffect(()=> {
-    //     if (nodeRoot && nodeRoot.current) {
-    //         setLoad(true)
-    //     }
-    // },[nodeRoot])
-
-    return <React.StrictMode>
-        <root.div styleSheets={sheets}>
-            <div ref={nodeRoot}>
-                {/*{isLoad ? <StyleProvider container={nodeRoot.current}>*/}
-                {/*    <App/>*/}
-                {/*</StyleProvider> : false}*/}
-                {/*    <StyleProvider container={nodeRoot.current}>*/}
-                {/*        <App/>*/}
-                {/*    </StyleProvider>*/}
-            </div>
-        </root.div>
-    </React.StrictMode>
-}
 
 let reactRoot: Root
 
@@ -69,9 +47,8 @@ async function main(newUrl: string = window.location.href) {
     if (reactRoot != null) reactRoot.unmount()
     // @ts-ignore
     window._ReadMarkApi = {reload: main}
-    await initApi()
+    await initApiClient()
     //check site
-    // const manager = registerDefaultRules()
     let matchedRules = matchRules(newUrl)
     console.log('matchedRules', matchedRules)
     if (matchedRules.length > 0) {
@@ -85,8 +62,13 @@ async function main(newUrl: string = window.location.href) {
                 return app.shadowRoot;
             })(),
         )
-        reactRoot.render(<React.StrictMode><MyRawRoot matchedRules={matchedRules}/></React.StrictMode>);
+        if(import.meta.env.DEV) reactRoot.render(<React.StrictMode><MyRawRoot matchedRules={matchedRules}/></React.StrictMode>);
+        else reactRoot.render(<MyRawRoot matchedRules={matchedRules}/>);
     }
+    matchedRules.forEach(rule => {
+        let view = rule.mount()
+        if(view != null) useAppStore.setState({route: [view]})
+    })
 }
 
 window.navigation.addEventListener("navigate", (event) => {

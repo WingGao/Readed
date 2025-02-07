@@ -19,6 +19,8 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
+import { InlineResponse200 } from '../models';
+// @ts-ignore
 import { Post } from '../models';
 // @ts-ignore
 import { PostSearchReq } from '../models';
@@ -228,7 +230,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiPostSearchPost(postSearchReq, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -285,7 +287,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): AxiosPromise<object> {
+        apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): AxiosPromise<InlineResponse200> {
             return DefaultApiFp(configuration).apiPostSearchPost(postSearchReq, options).then((request) => request(axios, basePath));
         },
         /**

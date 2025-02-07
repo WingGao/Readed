@@ -42,14 +42,18 @@ func wrapResponse[T any](h func(ctx *FiberCtxExt) T) fiber.Handler {
 				//if _, ok1 := r.(*errorx.ErrorX); ok1 {
 				//
 				//}
-				if _, ok := err.(*werror.BizError); ok { // 业务错误忽略
-
+				resp.Code = 400
+				ctx.Status(400)
+				if be, ok := err.(*werror.BizError); ok { // 业务错误忽略
+					resp.Code = be.Code
+					switch be.Code {
+					case werror.ERROR_CODE_NOT_LOGIN:
+						ctx.Status(fiber.StatusUnauthorized)
+					}
 				} else {
 					flogger.WithFiberError(ctx, err)
 				}
-				resp.Code = 400
 				resp.Msg = err.Error()
-				ctx.Status(400)
 			}
 			ctx.JSON(resp)
 		}()
@@ -66,7 +70,7 @@ func assertSession(c fiber.Ctx) (*session.Middleware, string) {
 	sess := session.FromContext(c)
 	uid := sess.Get(SessionUserIdKey)
 	if uid == nil {
-		panic(werror.NewBizError("未登录"))
+		panic(werror.NewBizError("未登录", werror.ERROR_CODE_NOT_LOGIN))
 	}
 	return sess, uid.(string)
 }
