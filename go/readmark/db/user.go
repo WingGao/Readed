@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -14,7 +15,7 @@ type User struct {
 }
 
 func (p *User) C() *mongo.Collection {
-	return MainDB.Collection("user")
+	return MainMg.Collection("user")
 }
 
 func buildUserIndex() error {

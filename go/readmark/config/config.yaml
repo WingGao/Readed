@@ -1,7 +1,6 @@
 addr: ":29000"
-mongo:
-  uri: "mongodb://localhost:27017"
-  db: "go_readed"
+mysql:
+  uri: "root:root@tcp(localhost:3306)/go_readmark"
 redis:
   host: "localhost"
   port: 6379

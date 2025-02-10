@@ -61,6 +61,18 @@ export interface Post {
      * @memberof Post
      */
     ReadLastReplyTime?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Post
+     */
+    UpdatedAt?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Post
+     */
+    MarkBanned?: boolean;
 }
 
 

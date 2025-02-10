@@ -1,13 +1,13 @@
 package controller
 
 import (
+	"readmark/model"
+
 	"github.com/WingGao/webutils/fiber3/flogger"
 	"github.com/WingGao/webutils/werror"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/session"
-	"go.mongodb.org/mongo-driver/v2/bson"
-	"readmark/model"
 )
 
 var (
@@ -66,30 +66,25 @@ func formatValidationError(err error) {
 
 }
 
-func assertSession(c fiber.Ctx) (*session.Middleware, string) {
+func assertSession(c fiber.Ctx) (*session.Middleware, uint) {
 	sess := session.FromContext(c)
 	uid := sess.Get(SessionUserIdKey)
 	if uid == nil {
 		panic(werror.NewBizError("未登录", werror.ERROR_CODE_NOT_LOGIN))
 	}
-	return sess, uid.(string)
+	return sess, uid.(uint)
 }
 
 type FiberCtxExt struct {
 	fiber.Ctx
-	uid string
+	uid uint
 }
 
-func (c *FiberCtxExt) UidHex() string {
-	if c.uid == "" {
+func (c *FiberCtxExt) Uid() uint {
+	if c.uid > 0 {
 		_, c.uid = assertSession(c)
 	}
 	return c.uid
-}
-
-func (c *FiberCtxExt) Uid() bson.ObjectID {
-	id, _ := bson.ObjectIDFromHex(c.UidHex())
-	return id
 }
 
 func NewFiberCtxExt(c fiber.Ctx) *FiberCtxExt {

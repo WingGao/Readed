@@ -1,5 +1,6 @@
-import {buildClient, initApi} from "@wingao/readmark-api";
-import axios from "axios";
+// @ts-nocheck
+import {buildClient, IBaseRespT, initApi} from "@wingao/readmark-api";
+import axios, { AxiosResponse } from "axios";
 import {buildStorage, MaybePromise, NotEmptyStorageValue, setupCache, StorageValue} from 'axios-cache-interceptor/dev';
 import {GM} from "$";
 import {defaultTo} from "lodash-es";
@@ -15,7 +16,7 @@ export async function initApiClient() {
           url: defaultTo(config.baseURL, '') + config.url,
           headers: config.headers,
           data: config.data,
-          responseType: config.responseType,
+          responseType: config.responseType as any,
           onload: (res) => {
             let rep = {
               data: res.response,
@@ -23,9 +24,9 @@ export async function initApiClient() {
               statusText: res.statusText,
               headers: res.responseHeaders,
               config: config,
-            }
+            }as any
             // debugger
-            resolve(rep)
+            resolve(rep )
           },
           onerror: reject
         })
@@ -62,4 +63,21 @@ export async function initApiClient() {
   //     debug: console.log
   // }))
   initApi(import.meta.env.VITE_API_BASE, client)
+}
+
+export async function toAntdRep<T,R extends IBaseRespT<T>>(r:T |Promise<T>| R | Promise<R> | Promise<AxiosResponse<R>>):Promise<{success:boolean,data:T}>{
+  let rep = r
+  let code = 0
+  if(r instanceof Promise){
+    rep  = await r
+  }
+  if(rep.data != null) rep = rep.data
+  if(rep.Code != null) {
+    code = rep.Code
+    rep = rep.Data
+  }
+  return {
+    success: code == 0,
+    data: rep,
+  }
 }

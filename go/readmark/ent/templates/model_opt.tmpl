@@ -1,0 +1,34 @@
+{{/*部分更新*/}}
+{{ define "model/additional/opt" }}
+type {{ $.Name }}Opt struct {
+    {{- if $.HasOneFieldID }}
+        ID *{{ $.ID.Type }} {{ with $.Annotations.Fields.StructTag.id }}`{{ . }}`{{ else }}`{{ $.ID.StructTag }}`{{ end }}
+    {{- end }}
+    {{- range $f := $.Fields }}
+        {{- $tag := $f.StructTag }}{{ with $tags := $.Annotations.Fields.StructTag }}{{ with index $tags $f.Name }}{{ $tag = . }}{{ end }}{{ end }}
+        {{- template "model/fieldcomment" $f }}
+        {{ $f.StructField }} *{{ $f.Type }} {{ if not $f.Sensitive }}`{{ $tag }}`{{ else }}{{ template "model/omittags" $ }}{{ end }}
+    {{- end }}
+}
+{{ end }}
+
+
+{{ define "update/additional/opt" }}
+    {{ $onebuilder := $.UpdateOneName }}
+    {{ $receiver := receiver $onebuilder }}
+    func ({{ $receiver }} *{{ $onebuilder }} ) SetFromOpt(opt *{{ $.Name }}Opt) *{{ $onebuilder }} {
+        {{- if $.HasOneFieldID }}
+            if opt.ID != nil && *opt.ID > 0 {
+                {{ $receiver }}.mutation.SetID(*opt.ID)
+            }
+        {{- end }}
+        {{- range $f := $.Fields }}
+            {{- if or (eq $f.Name "created_at") (eq $f.Name "updated_at") }}
+            {{- else }}
+                {{ $receiver }}.SetNillable{{ $f.StructField }}(opt.{{ $f.StructField }})
+            {{- end }}
+
+        {{- end }}
+        return {{ $receiver }}
+    }
+{{ end }}

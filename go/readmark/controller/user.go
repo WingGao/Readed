@@ -1,29 +1,28 @@
 package controller
 
 import (
-	"github.com/WingGao/webutils/wbson"
+	. "readmark/ent"
+	userSc "readmark/ent/user"
+	. "readmark/model"
+
 	"github.com/WingGao/webutils/werror"
 	"github.com/gofiber/fiber/v3/middleware/session"
 	"github.com/gookit/goutil/errorx"
-	"go.mongodb.org/mongo-driver/v2/bson"
-	. "readmark/db"
-	. "readmark/model"
 )
 
 func handleUserLogin(c *FiberCtxExt) LoginResp {
 	req := ParseForm(c, &User{})
 	werror.PanicError(
-		validate.Var(req.Username, "required"),
+		validate.Var(req.Account, "required"),
 	)
-	user := &User{}
-	req.C().FindOne(c.Context(), bson.D{{"Username", req.Username}}).Decode(&user)
-	if user.Username == req.Username {
+	user, _ := EntClient.User.Query().Where(userSc.AccountEQ(req.Account)).Only(c.Context())
+	if user.Account == req.Account {
 		// 成功
 		user.Password = ""
 		sess := session.FromContext(c)
 		sess.Reset()
-		sess.Set(SessionUserIdKey, user.ID.Hex())
-		return LoginResp{UserID: user.ID.Hex(), Token: sess.ID()}
+		sess.Set(SessionUserIdKey, user.ID)
+		return LoginResp{UserID: user.ID, Token: sess.ID()}
 	} else {
 		panic(errorx.E("用户名或密码错误"))
 	}
@@ -31,5 +30,5 @@ func handleUserLogin(c *FiberCtxExt) LoginResp {
 
 func handleUserInfo(c *FiberCtxExt) User {
 	_, uid := assertSession(c)
-	return User{ID: wbson.NewObjectIdHex(uid)}
+	return User{ID: uid}
 }

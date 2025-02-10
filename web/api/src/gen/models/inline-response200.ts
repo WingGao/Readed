@@ -12,7 +12,7 @@
  */
 
 
-import { Post } from './post';
+import { LoginResp } from './login-resp';
 
 /**
  * 
@@ -34,10 +34,10 @@ export interface InlineResponse200 {
     Msg?: string | null;
     /**
      * 
-     * @type {Array<Post>}
+     * @type {LoginResp}
      * @memberof InlineResponse200
      */
-    Data: Array<Post>;
+    Data: LoginResp;
 }
 
 

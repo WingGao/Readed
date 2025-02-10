@@ -21,6 +21,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 // @ts-ignore
 import { InlineResponse200 } from '../models';
 // @ts-ignore
+import { InlineResponse2001 } from '../models';
+// @ts-ignore
+import { InlineResponse2002 } from '../models';
+// @ts-ignore
 import { Post } from '../models';
 // @ts-ignore
 import { PostSearchReq } from '../models';
@@ -202,7 +206,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiOpenUserLoginPost(username: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async apiOpenUserLoginPost(username: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiOpenUserLoginPost(username, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -216,7 +220,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPostMarkPost(post?: Post, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async apiPostMarkPost(post?: Post, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiPostMarkPost(post, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -230,7 +234,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+        async apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiPostSearchPost(postSearchReq, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -267,7 +271,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiOpenUserLoginPost(username: string, options?: any): AxiosPromise<object> {
+        apiOpenUserLoginPost(username: string, options?: any): AxiosPromise<InlineResponse200> {
             return DefaultApiFp(configuration).apiOpenUserLoginPost(username, options).then((request) => request(axios, basePath));
         },
         /**
@@ -277,7 +281,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPostMarkPost(post?: Post, options?: any): AxiosPromise<object> {
+        apiPostMarkPost(post?: Post, options?: any): AxiosPromise<InlineResponse2001> {
             return DefaultApiFp(configuration).apiPostMarkPost(post, options).then((request) => request(axios, basePath));
         },
         /**
@@ -287,7 +291,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): AxiosPromise<InlineResponse200> {
+        apiPostSearchPost(postSearchReq?: PostSearchReq, options?: any): AxiosPromise<InlineResponse2002> {
             return DefaultApiFp(configuration).apiPostSearchPost(postSearchReq, options).then((request) => request(axios, basePath));
         },
         /**

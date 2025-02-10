@@ -22,6 +22,10 @@ export default defineConfig({
         connect: [
           'localhost',
           'localhost:29000'
+        ],
+        require: [
+          // https://github.com/Tampermonkey/tampermonkey/issues/2215 All GM_xmlhttpRequest requests are serialized
+          'https://raw.githubusercontent.com/Tampermonkey/utils/refs/heads/main/requires/gh_2215_make_GM_xhr_more_parallel_again.js',
         ]
       },
       build: {

@@ -11,12 +11,17 @@ var GlobalConfig *AppConfig
 type AppConfig struct {
 	Addr  string         `yaml:"addr"`
 	Mongo AppMongoConfig `yaml:"mongo"`
+	Mysql AppMysqlConfig `yaml:"mysql"`
 	Redis AppRedisConfig `yaml:"redis"`
 }
 
 type AppMongoConfig struct {
 	Uri string `yaml:"uri"`
 	DB  string `yaml:"db"`
+}
+
+type AppMysqlConfig struct {
+	Uri string `yaml:"uri"`
 }
 
 type AppRedisConfig struct {

@@ -17,6 +17,6 @@ export function formatUrl(base: string, q: any) {
     return base + '?' + qs.stringify(q)
 }
 
-export interface BaseRespT<T> extends BaseResp {
+export interface IBaseRespT<T> extends BaseResp {
     Data?: T
 }

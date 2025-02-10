@@ -1,60 +1,48 @@
 package controller
 
 import (
-	"fmt"
-	"github.com/WingGao/webutils/wbson"
+	. "readmark/ent"
+	postSc "readmark/ent/post"
+
 	"github.com/WingGao/webutils/werror"
-	"go.mongodb.org/mongo-driver/v2/bson"
-	"go.mongodb.org/mongo-driver/v2/mongo/options"
-	. "readmark/db"
-	"time"
 )
 
 func handlePostMark(c *FiberCtxExt) *Post {
 	_, uid := assertSession(c)
-	req := ParseJson(c, &Post{})
+	req := ParseJson(c, &PostOpt{})
 	werror.PanicError(
 		validate.Var(req.Site, "required"),
 		validate.Var(req.Pid, "required"),
 	)
-	old := &Post{}
-	lKey := fmt.Sprintf("readmark:post:lock:save:%s_%s_%d", uid, req.Site, req.Pid)
-	lock, _ := RedisLocker.Obtain(c.Context(), lKey, 3*time.Minute, nil)
-	defer lock.Release(c.Context())
-	old.C().FindOne(c.Context(),
-		bson.D{{"UserID", wbson.NewObjectIdHex(uid)}, {"Site", req.Site}, {"Pid", req.Pid}}).Decode(old)
-	if old.ID.IsZero() { //新增
-		old.ID = bson.NewObjectID()
-		old.UserID = wbson.NewObjectIdHex(uid)
-		old.Site = req.Site
-		old.Path = req.Path
-		old.Pid = req.Pid
-		old.PidStr = req.PidStr
-	} else {
-		//更新
-	}
-	old.MarkBanned = req.MarkBanned
-	old.UpdatedAt = time.Now()
-	old.ReadLastReplyId = req.ReadLastReplyId
-	old.ReadLastReplyIndex = req.ReadLastReplyIndex
-	old.ReadLastReplyTime = req.ReadLastReplyTime
-	old.C().UpdateByID(c.Context(), old.ID, bson.D{{"$set", old}}, options.UpdateOne().SetUpsert(true))
-	return old
+	werror.PanicError(TxWrap(c.Context(), func(tx *Tx) error {
+		old, _ := tx.Post.Query().WhereUserSitePid(uid, *req.Site, req.Pid).Only(c.Context())
+		if old == nil { //新增
+			old = tx.Post.Create().SetUserID(uid).SetSite(*req.Site).SetPid(*req.Pid).SaveX(c.Context())
+		}
+		_, err := tx.Post.UpdateOne(old).SetNillableMarkBanned(req.MarkBanned).SetNillableReadLastReplyID(req.ReadLastReplyID).SetNillableReadLastReplyIndex(
+			req.ReadLastReplyIndex).SetNillableReadLastReplyTime(req.ReadLastReplyTime).Save(c.Context())
+		return err
+	}))
+	return EntClient.Post.Query().WhereUserSitePid(uid, *req.Site, req.Pid).OnlyX(c.Context())
 }
 
 type PostSearchReq struct {
 	Site    string
-	PidList []int `json:",int"`
+	PidList []string
 }
 
 // 查询用户的文章
-func handlePostSearch(c *FiberCtxExt) []Post {
+func handlePostSearch(c *FiberCtxExt) (posts []*Post) {
 	req := ParseJson(c, &PostSearchReq{})
-	var posts []Post
-	cur, _ := (&Post{}).C().Find(c.Context(), bson.D{
-		{"UserID", c.Uid()}, {"Site", req.Site},
-		{"Pid", bson.D{{"$in", req.PidList}}},
-	})
-	cur.All(c.Context(), &posts)
-	return posts
+
+	if len(req.PidList) == 0 {
+		return
+	}
+
+	posts, _ = EntClient.Post.Query().Where(
+		postSc.UserIDEQ(c.Uid()),
+		postSc.SiteEQ(req.Site),
+		postSc.PidIn(req.PidList...),
+	).All(c.Context())
+	return
 }
