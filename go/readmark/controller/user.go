@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/WingGao/webutils/fiber3/flogger"
 	. "readmark/ent"
 	userSc "readmark/ent/user"
 	. "readmark/model"
@@ -15,8 +16,9 @@ func handleUserLogin(c *FiberCtxExt) LoginResp {
 	werror.PanicError(
 		validate.Var(req.Account, "required"),
 	)
-	user, _ := EntClient.User.Query().Where(userSc.AccountEQ(req.Account)).Only(c.Context())
-	if user.Account == req.Account {
+	user, err := EntClient.User.Query().Where(userSc.AccountEQ(req.Account)).Only(c.Context())
+	flogger.WithFiberIfError(c, err)
+	if user != nil && user.Account == req.Account {
 		// 成功
 		user.Password = ""
 		sess := session.FromContext(c)

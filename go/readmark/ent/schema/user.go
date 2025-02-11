@@ -13,9 +13,9 @@ type User struct {
 // Fields of the Post.
 func (User) Fields() []ent.Field {
 	return []ent.Field{
-		field.Uint("id"),
-		field.String("account"),
-		field.String("password"),
+		field.Uint("id").StructTag(`json:"ID,omitempty"`),
+		field.String("account").StructTag(`json:"Account,omitempty"`),
+		field.String("password").StructTag(`json:"Password,omitempty"`),
 	}
 }
 

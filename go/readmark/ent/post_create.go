@@ -66,6 +66,14 @@ func (pc *PostCreate) SetPath(s string) *PostCreate {
 	return pc
 }
 
+// SetNillablePath sets the "path" field if the given value is not nil.
+func (pc *PostCreate) SetNillablePath(s *string) *PostCreate {
+	if s != nil {
+		pc.SetPath(*s)
+	}
+	return pc
+}
+
 // SetPid sets the "pid" field.
 func (pc *PostCreate) SetPid(s string) *PostCreate {
 	pc.mutation.SetPid(s)
@@ -78,9 +86,25 @@ func (pc *PostCreate) SetReadLastReplyID(s string) *PostCreate {
 	return pc
 }
 
+// SetNillableReadLastReplyID sets the "read_last_reply_id" field if the given value is not nil.
+func (pc *PostCreate) SetNillableReadLastReplyID(s *string) *PostCreate {
+	if s != nil {
+		pc.SetReadLastReplyID(*s)
+	}
+	return pc
+}
+
 // SetReadLastReplyIndex sets the "read_last_reply_index" field.
 func (pc *PostCreate) SetReadLastReplyIndex(i int) *PostCreate {
 	pc.mutation.SetReadLastReplyIndex(i)
+	return pc
+}
+
+// SetNillableReadLastReplyIndex sets the "read_last_reply_index" field if the given value is not nil.
+func (pc *PostCreate) SetNillableReadLastReplyIndex(i *int) *PostCreate {
+	if i != nil {
+		pc.SetReadLastReplyIndex(*i)
+	}
 	return pc
 }
 
@@ -90,9 +114,25 @@ func (pc *PostCreate) SetReadLastReplyTime(t time.Time) *PostCreate {
 	return pc
 }
 
+// SetNillableReadLastReplyTime sets the "read_last_reply_time" field if the given value is not nil.
+func (pc *PostCreate) SetNillableReadLastReplyTime(t *time.Time) *PostCreate {
+	if t != nil {
+		pc.SetReadLastReplyTime(*t)
+	}
+	return pc
+}
+
 // SetMarkBanned sets the "mark_banned" field.
 func (pc *PostCreate) SetMarkBanned(b bool) *PostCreate {
 	pc.mutation.SetMarkBanned(b)
+	return pc
+}
+
+// SetNillableMarkBanned sets the "mark_banned" field if the given value is not nil.
+func (pc *PostCreate) SetNillableMarkBanned(b *bool) *PostCreate {
+	if b != nil {
+		pc.SetMarkBanned(*b)
+	}
 	return pc
 }
 
@@ -109,7 +149,6 @@ func (pc *PostCreate) Mutation() *PostMutation {
 
 // Save creates the Post in the database.
 func (pc *PostCreate) Save(ctx context.Context) (*Post, error) {
-	pc.defaults()
 	return withHooks(ctx, pc.sqlSave, pc.mutation, pc.hooks)
 }
 
@@ -135,49 +174,16 @@ func (pc *PostCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (pc *PostCreate) defaults() {
-	if _, ok := pc.mutation.CreatedAt(); !ok {
-		v := post.DefaultCreatedAt()
-		pc.mutation.SetCreatedAt(v)
-	}
-	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		v := post.DefaultUpdatedAt()
-		pc.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (pc *PostCreate) check() error {
-	if _, ok := pc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Post.created_at"`)}
-	}
-	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Post.updated_at"`)}
-	}
 	if _, ok := pc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "Post.user_id"`)}
 	}
 	if _, ok := pc.mutation.Site(); !ok {
 		return &ValidationError{Name: "site", err: errors.New(`ent: missing required field "Post.site"`)}
 	}
-	if _, ok := pc.mutation.Path(); !ok {
-		return &ValidationError{Name: "path", err: errors.New(`ent: missing required field "Post.path"`)}
-	}
 	if _, ok := pc.mutation.Pid(); !ok {
 		return &ValidationError{Name: "pid", err: errors.New(`ent: missing required field "Post.pid"`)}
-	}
-	if _, ok := pc.mutation.ReadLastReplyID(); !ok {
-		return &ValidationError{Name: "read_last_reply_id", err: errors.New(`ent: missing required field "Post.read_last_reply_id"`)}
-	}
-	if _, ok := pc.mutation.ReadLastReplyIndex(); !ok {
-		return &ValidationError{Name: "read_last_reply_index", err: errors.New(`ent: missing required field "Post.read_last_reply_index"`)}
-	}
-	if _, ok := pc.mutation.ReadLastReplyTime(); !ok {
-		return &ValidationError{Name: "read_last_reply_time", err: errors.New(`ent: missing required field "Post.read_last_reply_time"`)}
-	}
-	if _, ok := pc.mutation.MarkBanned(); !ok {
-		return &ValidationError{Name: "mark_banned", err: errors.New(`ent: missing required field "Post.mark_banned"`)}
 	}
 	return nil
 }
@@ -272,7 +278,6 @@ func (pcb *PostCreateBulk) Save(ctx context.Context) ([]*Post, error) {
 	for i := range pcb.builders {
 		func(i int, root context.Context) {
 			builder := pcb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*PostMutation)
 				if !ok {

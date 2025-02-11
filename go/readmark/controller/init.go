@@ -81,7 +81,7 @@ type FiberCtxExt struct {
 }
 
 func (c *FiberCtxExt) Uid() uint {
-	if c.uid > 0 {
+	if c.uid == 0 {
 		_, c.uid = assertSession(c)
 	}
 	return c.uid

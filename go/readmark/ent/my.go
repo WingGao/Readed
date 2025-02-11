@@ -2,6 +2,8 @@ package ent
 
 import (
 	"context"
+	"github.com/WingGao/webutils/fiber3/flogger"
+	"go.uber.org/zap"
 )
 
 var (
@@ -15,6 +17,7 @@ func TxWrap(c context.Context, fn func(tx *Tx) error) error {
 	}
 	defer func() {
 		if err := recover(); err != nil {
+			flogger.My.Error("TxWrap recover", zap.Error(err.(error)))
 			tx.Rollback()
 		}
 	}()

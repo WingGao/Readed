@@ -16,15 +16,15 @@ import (
 type User struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID uint `json:"id,omitempty"`
+	ID uint `json:"ID,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"CreatedAt,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt time.Time `json:"UpdatedAt,omitempty"`
 	// Account holds the value of the "account" field.
-	Account string `json:"account,omitempty"`
+	Account string `json:"Account,omitempty"`
 	// Password holds the value of the "password" field.
-	Password     string `json:"password,omitempty"`
+	Password     string `json:"Password,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -136,15 +136,15 @@ func (u *User) String() string {
 }
 
 type UserOpt struct {
-	ID *uint `json:"id,omitempty"`
+	ID *uint `json:"ID,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt *time.Time `json:"CreatedAt,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt *time.Time `json:"UpdatedAt,omitempty"`
 	// Account holds the value of the "account" field.
-	Account *string `json:"account,omitempty"`
+	Account *string `json:"Account,omitempty"`
 	// Password holds the value of the "password" field.
-	Password *string `json:"password,omitempty"`
+	Password *string `json:"Password,omitempty"`
 }
 
 // Users is a parsable slice of User.

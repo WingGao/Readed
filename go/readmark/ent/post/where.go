@@ -144,6 +144,16 @@ func CreatedAtLTE(v time.Time) predicate.Post {
 	return predicate.Post(sql.FieldLTE(FieldCreatedAt, v))
 }
 
+// CreatedAtIsNil applies the IsNil predicate on the "created_at" field.
+func CreatedAtIsNil() predicate.Post {
+	return predicate.Post(sql.FieldIsNull(FieldCreatedAt))
+}
+
+// CreatedAtNotNil applies the NotNil predicate on the "created_at" field.
+func CreatedAtNotNil() predicate.Post {
+	return predicate.Post(sql.FieldNotNull(FieldCreatedAt))
+}
+
 // UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.Post {
 	return predicate.Post(sql.FieldEQ(FieldUpdatedAt, v))
@@ -182,6 +192,16 @@ func UpdatedAtLT(v time.Time) predicate.Post {
 // UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Post {
 	return predicate.Post(sql.FieldLTE(FieldUpdatedAt, v))
+}
+
+// UpdatedAtIsNil applies the IsNil predicate on the "updated_at" field.
+func UpdatedAtIsNil() predicate.Post {
+	return predicate.Post(sql.FieldIsNull(FieldUpdatedAt))
+}
+
+// UpdatedAtNotNil applies the NotNil predicate on the "updated_at" field.
+func UpdatedAtNotNil() predicate.Post {
+	return predicate.Post(sql.FieldNotNull(FieldUpdatedAt))
 }
 
 // UserIDEQ applies the EQ predicate on the "user_id" field.
@@ -344,6 +364,16 @@ func PathHasSuffix(v string) predicate.Post {
 	return predicate.Post(sql.FieldHasSuffix(FieldPath, v))
 }
 
+// PathIsNil applies the IsNil predicate on the "path" field.
+func PathIsNil() predicate.Post {
+	return predicate.Post(sql.FieldIsNull(FieldPath))
+}
+
+// PathNotNil applies the NotNil predicate on the "path" field.
+func PathNotNil() predicate.Post {
+	return predicate.Post(sql.FieldNotNull(FieldPath))
+}
+
 // PathEqualFold applies the EqualFold predicate on the "path" field.
 func PathEqualFold(v string) predicate.Post {
 	return predicate.Post(sql.FieldEqualFold(FieldPath, v))
@@ -474,6 +504,16 @@ func ReadLastReplyIDHasSuffix(v string) predicate.Post {
 	return predicate.Post(sql.FieldHasSuffix(FieldReadLastReplyID, v))
 }
 
+// ReadLastReplyIDIsNil applies the IsNil predicate on the "read_last_reply_id" field.
+func ReadLastReplyIDIsNil() predicate.Post {
+	return predicate.Post(sql.FieldIsNull(FieldReadLastReplyID))
+}
+
+// ReadLastReplyIDNotNil applies the NotNil predicate on the "read_last_reply_id" field.
+func ReadLastReplyIDNotNil() predicate.Post {
+	return predicate.Post(sql.FieldNotNull(FieldReadLastReplyID))
+}
+
 // ReadLastReplyIDEqualFold applies the EqualFold predicate on the "read_last_reply_id" field.
 func ReadLastReplyIDEqualFold(v string) predicate.Post {
 	return predicate.Post(sql.FieldEqualFold(FieldReadLastReplyID, v))
@@ -524,6 +564,16 @@ func ReadLastReplyIndexLTE(v int) predicate.Post {
 	return predicate.Post(sql.FieldLTE(FieldReadLastReplyIndex, v))
 }
 
+// ReadLastReplyIndexIsNil applies the IsNil predicate on the "read_last_reply_index" field.
+func ReadLastReplyIndexIsNil() predicate.Post {
+	return predicate.Post(sql.FieldIsNull(FieldReadLastReplyIndex))
+}
+
+// ReadLastReplyIndexNotNil applies the NotNil predicate on the "read_last_reply_index" field.
+func ReadLastReplyIndexNotNil() predicate.Post {
+	return predicate.Post(sql.FieldNotNull(FieldReadLastReplyIndex))
+}
+
 // ReadLastReplyTimeEQ applies the EQ predicate on the "read_last_reply_time" field.
 func ReadLastReplyTimeEQ(v time.Time) predicate.Post {
 	return predicate.Post(sql.FieldEQ(FieldReadLastReplyTime, v))
@@ -564,6 +614,16 @@ func ReadLastReplyTimeLTE(v time.Time) predicate.Post {
 	return predicate.Post(sql.FieldLTE(FieldReadLastReplyTime, v))
 }
 
+// ReadLastReplyTimeIsNil applies the IsNil predicate on the "read_last_reply_time" field.
+func ReadLastReplyTimeIsNil() predicate.Post {
+	return predicate.Post(sql.FieldIsNull(FieldReadLastReplyTime))
+}
+
+// ReadLastReplyTimeNotNil applies the NotNil predicate on the "read_last_reply_time" field.
+func ReadLastReplyTimeNotNil() predicate.Post {
+	return predicate.Post(sql.FieldNotNull(FieldReadLastReplyTime))
+}
+
 // MarkBannedEQ applies the EQ predicate on the "mark_banned" field.
 func MarkBannedEQ(v bool) predicate.Post {
 	return predicate.Post(sql.FieldEQ(FieldMarkBanned, v))
@@ -572,6 +632,16 @@ func MarkBannedEQ(v bool) predicate.Post {
 // MarkBannedNEQ applies the NEQ predicate on the "mark_banned" field.
 func MarkBannedNEQ(v bool) predicate.Post {
 	return predicate.Post(sql.FieldNEQ(FieldMarkBanned, v))
+}
+
+// MarkBannedIsNil applies the IsNil predicate on the "mark_banned" field.
+func MarkBannedIsNil() predicate.Post {
+	return predicate.Post(sql.FieldIsNull(FieldMarkBanned))
+}
+
+// MarkBannedNotNil applies the NotNil predicate on the "mark_banned" field.
+func MarkBannedNotNil() predicate.Post {
+	return predicate.Post(sql.FieldNotNull(FieldMarkBanned))
 }
 
 // And groups predicates with the AND operator between them.

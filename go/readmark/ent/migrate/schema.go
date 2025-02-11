@@ -11,16 +11,16 @@ var (
 	// PostsColumns holds the columns for the "posts" table.
 	PostsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUint, Increment: true},
-		{Name: "created_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
-		{Name: "updated_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Default: "CURRENT_TIMESTAMP", SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Default: "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "user_id", Type: field.TypeUint},
 		{Name: "site", Type: field.TypeString},
-		{Name: "path", Type: field.TypeString},
+		{Name: "path", Type: field.TypeString, Nullable: true},
 		{Name: "pid", Type: field.TypeString},
-		{Name: "read_last_reply_id", Type: field.TypeString},
-		{Name: "read_last_reply_index", Type: field.TypeInt, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "read_last_reply_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
-		{Name: "mark_banned", Type: field.TypeBool},
+		{Name: "read_last_reply_id", Type: field.TypeString, Nullable: true},
+		{Name: "read_last_reply_index", Type: field.TypeInt, Nullable: true, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "read_last_reply_time", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "mark_banned", Type: field.TypeBool, Nullable: true},
 	}
 	// PostsTable holds the schema information for the "posts" table.
 	PostsTable = &schema.Table{
@@ -38,8 +38,8 @@ var (
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUint, Increment: true},
-		{Name: "created_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
-		{Name: "updated_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Default: "CURRENT_TIMESTAMP", SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Default: "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "account", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
 	}

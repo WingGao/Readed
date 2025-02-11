@@ -188,9 +188,22 @@ func (m *PostMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.CreatedAt, nil
 }
 
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *PostMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[post.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *PostMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[post.FieldCreatedAt]
+	return ok
+}
+
 // ResetCreatedAt resets all changes to the "created_at" field.
 func (m *PostMutation) ResetCreatedAt() {
 	m.created_at = nil
+	delete(m.clearedFields, post.FieldCreatedAt)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -224,9 +237,22 @@ func (m *PostMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.UpdatedAt, nil
 }
 
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *PostMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[post.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *PostMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[post.FieldUpdatedAt]
+	return ok
+}
+
 // ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *PostMutation) ResetUpdatedAt() {
 	m.updated_at = nil
+	delete(m.clearedFields, post.FieldUpdatedAt)
 }
 
 // SetUserID sets the "user_id" field.
@@ -352,9 +378,22 @@ func (m *PostMutation) OldPath(ctx context.Context) (v string, err error) {
 	return oldValue.Path, nil
 }
 
+// ClearPath clears the value of the "path" field.
+func (m *PostMutation) ClearPath() {
+	m._path = nil
+	m.clearedFields[post.FieldPath] = struct{}{}
+}
+
+// PathCleared returns if the "path" field was cleared in this mutation.
+func (m *PostMutation) PathCleared() bool {
+	_, ok := m.clearedFields[post.FieldPath]
+	return ok
+}
+
 // ResetPath resets all changes to the "path" field.
 func (m *PostMutation) ResetPath() {
 	m._path = nil
+	delete(m.clearedFields, post.FieldPath)
 }
 
 // SetPid sets the "pid" field.
@@ -424,9 +463,22 @@ func (m *PostMutation) OldReadLastReplyID(ctx context.Context) (v string, err er
 	return oldValue.ReadLastReplyID, nil
 }
 
+// ClearReadLastReplyID clears the value of the "read_last_reply_id" field.
+func (m *PostMutation) ClearReadLastReplyID() {
+	m.read_last_reply_id = nil
+	m.clearedFields[post.FieldReadLastReplyID] = struct{}{}
+}
+
+// ReadLastReplyIDCleared returns if the "read_last_reply_id" field was cleared in this mutation.
+func (m *PostMutation) ReadLastReplyIDCleared() bool {
+	_, ok := m.clearedFields[post.FieldReadLastReplyID]
+	return ok
+}
+
 // ResetReadLastReplyID resets all changes to the "read_last_reply_id" field.
 func (m *PostMutation) ResetReadLastReplyID() {
 	m.read_last_reply_id = nil
+	delete(m.clearedFields, post.FieldReadLastReplyID)
 }
 
 // SetReadLastReplyIndex sets the "read_last_reply_index" field.
@@ -479,10 +531,24 @@ func (m *PostMutation) AddedReadLastReplyIndex() (r int, exists bool) {
 	return *v, true
 }
 
+// ClearReadLastReplyIndex clears the value of the "read_last_reply_index" field.
+func (m *PostMutation) ClearReadLastReplyIndex() {
+	m.read_last_reply_index = nil
+	m.addread_last_reply_index = nil
+	m.clearedFields[post.FieldReadLastReplyIndex] = struct{}{}
+}
+
+// ReadLastReplyIndexCleared returns if the "read_last_reply_index" field was cleared in this mutation.
+func (m *PostMutation) ReadLastReplyIndexCleared() bool {
+	_, ok := m.clearedFields[post.FieldReadLastReplyIndex]
+	return ok
+}
+
 // ResetReadLastReplyIndex resets all changes to the "read_last_reply_index" field.
 func (m *PostMutation) ResetReadLastReplyIndex() {
 	m.read_last_reply_index = nil
 	m.addread_last_reply_index = nil
+	delete(m.clearedFields, post.FieldReadLastReplyIndex)
 }
 
 // SetReadLastReplyTime sets the "read_last_reply_time" field.
@@ -516,9 +582,22 @@ func (m *PostMutation) OldReadLastReplyTime(ctx context.Context) (v time.Time, e
 	return oldValue.ReadLastReplyTime, nil
 }
 
+// ClearReadLastReplyTime clears the value of the "read_last_reply_time" field.
+func (m *PostMutation) ClearReadLastReplyTime() {
+	m.read_last_reply_time = nil
+	m.clearedFields[post.FieldReadLastReplyTime] = struct{}{}
+}
+
+// ReadLastReplyTimeCleared returns if the "read_last_reply_time" field was cleared in this mutation.
+func (m *PostMutation) ReadLastReplyTimeCleared() bool {
+	_, ok := m.clearedFields[post.FieldReadLastReplyTime]
+	return ok
+}
+
 // ResetReadLastReplyTime resets all changes to the "read_last_reply_time" field.
 func (m *PostMutation) ResetReadLastReplyTime() {
 	m.read_last_reply_time = nil
+	delete(m.clearedFields, post.FieldReadLastReplyTime)
 }
 
 // SetMarkBanned sets the "mark_banned" field.
@@ -552,9 +631,22 @@ func (m *PostMutation) OldMarkBanned(ctx context.Context) (v bool, err error) {
 	return oldValue.MarkBanned, nil
 }
 
+// ClearMarkBanned clears the value of the "mark_banned" field.
+func (m *PostMutation) ClearMarkBanned() {
+	m.mark_banned = nil
+	m.clearedFields[post.FieldMarkBanned] = struct{}{}
+}
+
+// MarkBannedCleared returns if the "mark_banned" field was cleared in this mutation.
+func (m *PostMutation) MarkBannedCleared() bool {
+	_, ok := m.clearedFields[post.FieldMarkBanned]
+	return ok
+}
+
 // ResetMarkBanned resets all changes to the "mark_banned" field.
 func (m *PostMutation) ResetMarkBanned() {
 	m.mark_banned = nil
+	delete(m.clearedFields, post.FieldMarkBanned)
 }
 
 // Where appends a list predicates to the PostMutation builder.
@@ -814,7 +906,29 @@ func (m *PostMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *PostMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(post.FieldCreatedAt) {
+		fields = append(fields, post.FieldCreatedAt)
+	}
+	if m.FieldCleared(post.FieldUpdatedAt) {
+		fields = append(fields, post.FieldUpdatedAt)
+	}
+	if m.FieldCleared(post.FieldPath) {
+		fields = append(fields, post.FieldPath)
+	}
+	if m.FieldCleared(post.FieldReadLastReplyID) {
+		fields = append(fields, post.FieldReadLastReplyID)
+	}
+	if m.FieldCleared(post.FieldReadLastReplyIndex) {
+		fields = append(fields, post.FieldReadLastReplyIndex)
+	}
+	if m.FieldCleared(post.FieldReadLastReplyTime) {
+		fields = append(fields, post.FieldReadLastReplyTime)
+	}
+	if m.FieldCleared(post.FieldMarkBanned) {
+		fields = append(fields, post.FieldMarkBanned)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -827,6 +941,29 @@ func (m *PostMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *PostMutation) ClearField(name string) error {
+	switch name {
+	case post.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case post.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case post.FieldPath:
+		m.ClearPath()
+		return nil
+	case post.FieldReadLastReplyID:
+		m.ClearReadLastReplyID()
+		return nil
+	case post.FieldReadLastReplyIndex:
+		m.ClearReadLastReplyIndex()
+		return nil
+	case post.FieldReadLastReplyTime:
+		m.ClearReadLastReplyTime()
+		return nil
+	case post.FieldMarkBanned:
+		m.ClearMarkBanned()
+		return nil
+	}
 	return fmt.Errorf("unknown Post nullable field %s", name)
 }
 
@@ -1067,9 +1204,22 @@ func (m *UserMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.CreatedAt, nil
 }
 
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *UserMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[user.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *UserMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[user.FieldCreatedAt]
+	return ok
+}
+
 // ResetCreatedAt resets all changes to the "created_at" field.
 func (m *UserMutation) ResetCreatedAt() {
 	m.created_at = nil
+	delete(m.clearedFields, user.FieldCreatedAt)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -1103,9 +1253,22 @@ func (m *UserMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.UpdatedAt, nil
 }
 
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *UserMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[user.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *UserMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[user.FieldUpdatedAt]
+	return ok
+}
+
 // ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *UserMutation) ResetUpdatedAt() {
 	m.updated_at = nil
+	delete(m.clearedFields, user.FieldUpdatedAt)
 }
 
 // SetAccount sets the "account" field.
@@ -1326,7 +1489,14 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *UserMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(user.FieldCreatedAt) {
+		fields = append(fields, user.FieldCreatedAt)
+	}
+	if m.FieldCleared(user.FieldUpdatedAt) {
+		fields = append(fields, user.FieldUpdatedAt)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -1339,6 +1509,14 @@ func (m *UserMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *UserMutation) ClearField(name string) error {
+	switch name {
+	case user.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case user.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	}
 	return fmt.Errorf("unknown User nullable field %s", name)
 }
 

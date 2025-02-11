@@ -28,12 +28,6 @@ func (pu *PostUpdate) Where(ps ...predicate.Post) *PostUpdate {
 	return pu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pu *PostUpdate) SetUpdatedAt(t time.Time) *PostUpdate {
-	pu.mutation.SetUpdatedAt(t)
-	return pu
-}
-
 // SetUserID sets the "user_id" field.
 func (pu *PostUpdate) SetUserID(u uint) *PostUpdate {
 	pu.mutation.ResetUserID()
@@ -83,6 +77,12 @@ func (pu *PostUpdate) SetNillablePath(s *string) *PostUpdate {
 	return pu
 }
 
+// ClearPath clears the value of the "path" field.
+func (pu *PostUpdate) ClearPath() *PostUpdate {
+	pu.mutation.ClearPath()
+	return pu
+}
+
 // SetPid sets the "pid" field.
 func (pu *PostUpdate) SetPid(s string) *PostUpdate {
 	pu.mutation.SetPid(s)
@@ -111,6 +111,12 @@ func (pu *PostUpdate) SetNillableReadLastReplyID(s *string) *PostUpdate {
 	return pu
 }
 
+// ClearReadLastReplyID clears the value of the "read_last_reply_id" field.
+func (pu *PostUpdate) ClearReadLastReplyID() *PostUpdate {
+	pu.mutation.ClearReadLastReplyID()
+	return pu
+}
+
 // SetReadLastReplyIndex sets the "read_last_reply_index" field.
 func (pu *PostUpdate) SetReadLastReplyIndex(i int) *PostUpdate {
 	pu.mutation.ResetReadLastReplyIndex()
@@ -132,6 +138,12 @@ func (pu *PostUpdate) AddReadLastReplyIndex(i int) *PostUpdate {
 	return pu
 }
 
+// ClearReadLastReplyIndex clears the value of the "read_last_reply_index" field.
+func (pu *PostUpdate) ClearReadLastReplyIndex() *PostUpdate {
+	pu.mutation.ClearReadLastReplyIndex()
+	return pu
+}
+
 // SetReadLastReplyTime sets the "read_last_reply_time" field.
 func (pu *PostUpdate) SetReadLastReplyTime(t time.Time) *PostUpdate {
 	pu.mutation.SetReadLastReplyTime(t)
@@ -143,6 +155,12 @@ func (pu *PostUpdate) SetNillableReadLastReplyTime(t *time.Time) *PostUpdate {
 	if t != nil {
 		pu.SetReadLastReplyTime(*t)
 	}
+	return pu
+}
+
+// ClearReadLastReplyTime clears the value of the "read_last_reply_time" field.
+func (pu *PostUpdate) ClearReadLastReplyTime() *PostUpdate {
+	pu.mutation.ClearReadLastReplyTime()
 	return pu
 }
 
@@ -160,6 +178,12 @@ func (pu *PostUpdate) SetNillableMarkBanned(b *bool) *PostUpdate {
 	return pu
 }
 
+// ClearMarkBanned clears the value of the "mark_banned" field.
+func (pu *PostUpdate) ClearMarkBanned() *PostUpdate {
+	pu.mutation.ClearMarkBanned()
+	return pu
+}
+
 // Mutation returns the PostMutation object of the builder.
 func (pu *PostUpdate) Mutation() *PostMutation {
 	return pu.mutation
@@ -167,7 +191,6 @@ func (pu *PostUpdate) Mutation() *PostMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (pu *PostUpdate) Save(ctx context.Context) (int, error) {
-	pu.defaults()
 	return withHooks(ctx, pu.sqlSave, pu.mutation, pu.hooks)
 }
 
@@ -193,14 +216,6 @@ func (pu *PostUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (pu *PostUpdate) defaults() {
-	if _, ok := pu.mutation.UpdatedAt(); !ok {
-		v := post.UpdateDefaultUpdatedAt()
-		pu.mutation.SetUpdatedAt(v)
-	}
-}
-
 func (pu *PostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(post.Table, post.Columns, sqlgraph.NewFieldSpec(post.FieldID, field.TypeUint))
 	if ps := pu.mutation.predicates; len(ps) > 0 {
@@ -210,8 +225,11 @@ func (pu *PostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := pu.mutation.UpdatedAt(); ok {
-		_spec.SetField(post.FieldUpdatedAt, field.TypeTime, value)
+	if pu.mutation.CreatedAtCleared() {
+		_spec.ClearField(post.FieldCreatedAt, field.TypeTime)
+	}
+	if pu.mutation.UpdatedAtCleared() {
+		_spec.ClearField(post.FieldUpdatedAt, field.TypeTime)
 	}
 	if value, ok := pu.mutation.UserID(); ok {
 		_spec.SetField(post.FieldUserID, field.TypeUint, value)
@@ -225,11 +243,17 @@ func (pu *PostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.Path(); ok {
 		_spec.SetField(post.FieldPath, field.TypeString, value)
 	}
+	if pu.mutation.PathCleared() {
+		_spec.ClearField(post.FieldPath, field.TypeString)
+	}
 	if value, ok := pu.mutation.Pid(); ok {
 		_spec.SetField(post.FieldPid, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.ReadLastReplyID(); ok {
 		_spec.SetField(post.FieldReadLastReplyID, field.TypeString, value)
+	}
+	if pu.mutation.ReadLastReplyIDCleared() {
+		_spec.ClearField(post.FieldReadLastReplyID, field.TypeString)
 	}
 	if value, ok := pu.mutation.ReadLastReplyIndex(); ok {
 		_spec.SetField(post.FieldReadLastReplyIndex, field.TypeInt, value)
@@ -237,11 +261,20 @@ func (pu *PostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.AddedReadLastReplyIndex(); ok {
 		_spec.AddField(post.FieldReadLastReplyIndex, field.TypeInt, value)
 	}
+	if pu.mutation.ReadLastReplyIndexCleared() {
+		_spec.ClearField(post.FieldReadLastReplyIndex, field.TypeInt)
+	}
 	if value, ok := pu.mutation.ReadLastReplyTime(); ok {
 		_spec.SetField(post.FieldReadLastReplyTime, field.TypeTime, value)
 	}
+	if pu.mutation.ReadLastReplyTimeCleared() {
+		_spec.ClearField(post.FieldReadLastReplyTime, field.TypeTime)
+	}
 	if value, ok := pu.mutation.MarkBanned(); ok {
 		_spec.SetField(post.FieldMarkBanned, field.TypeBool, value)
+	}
+	if pu.mutation.MarkBannedCleared() {
+		_spec.ClearField(post.FieldMarkBanned, field.TypeBool)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -261,12 +294,6 @@ type PostUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *PostMutation
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (puo *PostUpdateOne) SetUpdatedAt(t time.Time) *PostUpdateOne {
-	puo.mutation.SetUpdatedAt(t)
-	return puo
 }
 
 // SetUserID sets the "user_id" field.
@@ -318,6 +345,12 @@ func (puo *PostUpdateOne) SetNillablePath(s *string) *PostUpdateOne {
 	return puo
 }
 
+// ClearPath clears the value of the "path" field.
+func (puo *PostUpdateOne) ClearPath() *PostUpdateOne {
+	puo.mutation.ClearPath()
+	return puo
+}
+
 // SetPid sets the "pid" field.
 func (puo *PostUpdateOne) SetPid(s string) *PostUpdateOne {
 	puo.mutation.SetPid(s)
@@ -346,6 +379,12 @@ func (puo *PostUpdateOne) SetNillableReadLastReplyID(s *string) *PostUpdateOne {
 	return puo
 }
 
+// ClearReadLastReplyID clears the value of the "read_last_reply_id" field.
+func (puo *PostUpdateOne) ClearReadLastReplyID() *PostUpdateOne {
+	puo.mutation.ClearReadLastReplyID()
+	return puo
+}
+
 // SetReadLastReplyIndex sets the "read_last_reply_index" field.
 func (puo *PostUpdateOne) SetReadLastReplyIndex(i int) *PostUpdateOne {
 	puo.mutation.ResetReadLastReplyIndex()
@@ -367,6 +406,12 @@ func (puo *PostUpdateOne) AddReadLastReplyIndex(i int) *PostUpdateOne {
 	return puo
 }
 
+// ClearReadLastReplyIndex clears the value of the "read_last_reply_index" field.
+func (puo *PostUpdateOne) ClearReadLastReplyIndex() *PostUpdateOne {
+	puo.mutation.ClearReadLastReplyIndex()
+	return puo
+}
+
 // SetReadLastReplyTime sets the "read_last_reply_time" field.
 func (puo *PostUpdateOne) SetReadLastReplyTime(t time.Time) *PostUpdateOne {
 	puo.mutation.SetReadLastReplyTime(t)
@@ -381,6 +426,12 @@ func (puo *PostUpdateOne) SetNillableReadLastReplyTime(t *time.Time) *PostUpdate
 	return puo
 }
 
+// ClearReadLastReplyTime clears the value of the "read_last_reply_time" field.
+func (puo *PostUpdateOne) ClearReadLastReplyTime() *PostUpdateOne {
+	puo.mutation.ClearReadLastReplyTime()
+	return puo
+}
+
 // SetMarkBanned sets the "mark_banned" field.
 func (puo *PostUpdateOne) SetMarkBanned(b bool) *PostUpdateOne {
 	puo.mutation.SetMarkBanned(b)
@@ -392,6 +443,12 @@ func (puo *PostUpdateOne) SetNillableMarkBanned(b *bool) *PostUpdateOne {
 	if b != nil {
 		puo.SetMarkBanned(*b)
 	}
+	return puo
+}
+
+// ClearMarkBanned clears the value of the "mark_banned" field.
+func (puo *PostUpdateOne) ClearMarkBanned() *PostUpdateOne {
+	puo.mutation.ClearMarkBanned()
 	return puo
 }
 
@@ -415,7 +472,6 @@ func (puo *PostUpdateOne) Select(field string, fields ...string) *PostUpdateOne 
 
 // Save executes the query and returns the updated Post entity.
 func (puo *PostUpdateOne) Save(ctx context.Context) (*Post, error) {
-	puo.defaults()
 	return withHooks(ctx, puo.sqlSave, puo.mutation, puo.hooks)
 }
 
@@ -438,14 +494,6 @@ func (puo *PostUpdateOne) Exec(ctx context.Context) error {
 func (puo *PostUpdateOne) ExecX(ctx context.Context) {
 	if err := puo.Exec(ctx); err != nil {
 		panic(err)
-	}
-}
-
-// defaults sets the default values of the builder before save.
-func (puo *PostUpdateOne) defaults() {
-	if _, ok := puo.mutation.UpdatedAt(); !ok {
-		v := post.UpdateDefaultUpdatedAt()
-		puo.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -475,8 +523,11 @@ func (puo *PostUpdateOne) sqlSave(ctx context.Context) (_node *Post, err error) 
 			}
 		}
 	}
-	if value, ok := puo.mutation.UpdatedAt(); ok {
-		_spec.SetField(post.FieldUpdatedAt, field.TypeTime, value)
+	if puo.mutation.CreatedAtCleared() {
+		_spec.ClearField(post.FieldCreatedAt, field.TypeTime)
+	}
+	if puo.mutation.UpdatedAtCleared() {
+		_spec.ClearField(post.FieldUpdatedAt, field.TypeTime)
 	}
 	if value, ok := puo.mutation.UserID(); ok {
 		_spec.SetField(post.FieldUserID, field.TypeUint, value)
@@ -490,11 +541,17 @@ func (puo *PostUpdateOne) sqlSave(ctx context.Context) (_node *Post, err error) 
 	if value, ok := puo.mutation.Path(); ok {
 		_spec.SetField(post.FieldPath, field.TypeString, value)
 	}
+	if puo.mutation.PathCleared() {
+		_spec.ClearField(post.FieldPath, field.TypeString)
+	}
 	if value, ok := puo.mutation.Pid(); ok {
 		_spec.SetField(post.FieldPid, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.ReadLastReplyID(); ok {
 		_spec.SetField(post.FieldReadLastReplyID, field.TypeString, value)
+	}
+	if puo.mutation.ReadLastReplyIDCleared() {
+		_spec.ClearField(post.FieldReadLastReplyID, field.TypeString)
 	}
 	if value, ok := puo.mutation.ReadLastReplyIndex(); ok {
 		_spec.SetField(post.FieldReadLastReplyIndex, field.TypeInt, value)
@@ -502,11 +559,20 @@ func (puo *PostUpdateOne) sqlSave(ctx context.Context) (_node *Post, err error) 
 	if value, ok := puo.mutation.AddedReadLastReplyIndex(); ok {
 		_spec.AddField(post.FieldReadLastReplyIndex, field.TypeInt, value)
 	}
+	if puo.mutation.ReadLastReplyIndexCleared() {
+		_spec.ClearField(post.FieldReadLastReplyIndex, field.TypeInt)
+	}
 	if value, ok := puo.mutation.ReadLastReplyTime(); ok {
 		_spec.SetField(post.FieldReadLastReplyTime, field.TypeTime, value)
 	}
+	if puo.mutation.ReadLastReplyTimeCleared() {
+		_spec.ClearField(post.FieldReadLastReplyTime, field.TypeTime)
+	}
 	if value, ok := puo.mutation.MarkBanned(); ok {
 		_spec.SetField(post.FieldMarkBanned, field.TypeBool, value)
+	}
+	if puo.mutation.MarkBannedCleared() {
+		_spec.ClearField(post.FieldMarkBanned, field.TypeBool)
 	}
 	_node = &Post{config: puo.config}
 	_spec.Assign = _node.assignValues
