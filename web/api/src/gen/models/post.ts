@@ -39,16 +39,16 @@ export interface Post {
     Path?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof Post
      */
-    Pid?: number;
+    Pid?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof Post
      */
-    ReadLastReplyId?: number;
+    ReadLastReplyID?: string;
     /**
      * 
      * @type {number}

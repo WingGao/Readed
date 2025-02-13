@@ -37,14 +37,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary 登录
-         * @param {string} username 
+         * @param {string} account 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiOpenUserLoginPost: async (username: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'username' is not null or undefined
-            if (username === null || username === undefined) {
-                throw new RequiredError('username','Required parameter username was null or undefined when calling apiOpenUserLoginPost.');
+        apiOpenUserLoginPost: async (account: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'account' is not null or undefined
+            if (account === null || account === undefined) {
+                throw new RequiredError('account','Required parameter account was null or undefined when calling apiOpenUserLoginPost.');
             }
             const localVarPath = `/api/open/user/login`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
@@ -58,8 +58,8 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             const localVarFormParams = new URLSearchParams();
 
 
-            if (username !== undefined) { 
-                localVarFormParams.set('Username', username as any);
+            if (account !== undefined) { 
+                localVarFormParams.set('Account', account as any);
             }
     
     
@@ -202,12 +202,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 登录
-         * @param {string} username 
+         * @param {string} account 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiOpenUserLoginPost(username: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiOpenUserLoginPost(username, options);
+        async apiOpenUserLoginPost(account: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiOpenUserLoginPost(account, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -267,12 +267,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 登录
-         * @param {string} username 
+         * @param {string} account 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiOpenUserLoginPost(username: string, options?: any): AxiosPromise<InlineResponse200> {
-            return DefaultApiFp(configuration).apiOpenUserLoginPost(username, options).then((request) => request(axios, basePath));
+        apiOpenUserLoginPost(account: string, options?: any): AxiosPromise<InlineResponse200> {
+            return DefaultApiFp(configuration).apiOpenUserLoginPost(account, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -317,13 +317,13 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary 登录
-     * @param {string} username 
+     * @param {string} account 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public apiOpenUserLoginPost(username: string, options?: any) {
-        return DefaultApiFp(this.configuration).apiOpenUserLoginPost(username, options).then((request) => request(this.axios, this.basePath));
+    public apiOpenUserLoginPost(account: string, options?: any) {
+        return DefaultApiFp(this.configuration).apiOpenUserLoginPost(account, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

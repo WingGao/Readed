@@ -29,6 +29,9 @@ importers:
       axios-cache-interceptor:
         specifier: ^1.6.2
         version: 1.6.2(axios@1.7.9)
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       jquery:
         specifier: ^3.7.1
         version: 3.7.1

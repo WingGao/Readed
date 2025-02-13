@@ -7,6 +7,7 @@ import {PlusOutlined, SyncOutlined} from "@ant-design/icons";
 import PostView from "./views/PostView";
 import useAppStore, {AppViewPaths} from "./utils/store";
 import LoginView from "./views/LoginView";
+import { head } from 'lodash-es';
 
 
 function RouterApp(){
@@ -25,7 +26,8 @@ function App() {
 
   return (
     <Draggable handle=".drag-title">
-          <Card id="app-shadow" className="App" ref={appRef} title={<span className="drag-title">ReadMark</span>}
+          <Card id="app-shadow" className="App" ref={appRef} title={<span className="drag-title">ReadMark</span>} 
+          styles={{header:{padding:'0 5px'},body:{padding:'5px'},}}
                 extra={<Button type="text" icon={<SyncOutlined/>} title="reload"
                                onClick={() => window._ReadMarkApi.reload()}></Button>}>
             <MemoryRouter>

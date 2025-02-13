@@ -7,12 +7,13 @@ import useAppStore from "../utils/store"
 import { useNavigate } from "react-router"
 
 function LoginView() {
+  const navigate = useNavigate()
   return <ProForm submitter={{resetButtonProps:false,searchConfig:{submitText:'登录'}}} 
   onFinish={async (values:any)=>{
     const rep = await Api.apiOpenUserLoginPost(values.Username)
     if(rep.data.Code == 0){
       useAppStore.getState().setToken(rep.data.Data.Token)
-      useNavigate(-1)
+      navigate(-1)
     }
     return true
   }}>

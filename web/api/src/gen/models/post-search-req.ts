@@ -27,10 +27,10 @@ export interface PostSearchReq {
     Site?: string;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<string>}
      * @memberof PostSearchReq
      */
-    PidList?: Array<number>;
+    PidList?: Array<string>;
 }
 
 

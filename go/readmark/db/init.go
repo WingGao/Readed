@@ -31,7 +31,8 @@ func InitDB() {
 	MainMg = client.Database(config.GlobalConfig.Mongo.DB)
 	fmt.Println("Connected to MongoDB!", client.NumberSessionsInProgress(), MainMg.Name())
 	werror.PanicError(buildUserIndex(), buildPostIndex())
-	drv, _ := sql.Open("mysql", config.GlobalConfig.Mysql.Uri)
+	drv, oerr := sql.Open("mysql", config.GlobalConfig.Mysql.Uri)
+	werror.PanicError(oerr)
 	ent.EntClient = ent.NewClient(ent.Driver(dialect.DebugWithContext(drv, func(ctx context.Context, a ...any) {
 		flogger.My.Info(fmt.Sprint(a...))
 	})))

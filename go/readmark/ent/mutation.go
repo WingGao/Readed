@@ -364,7 +364,7 @@ func (m *PostMutation) Path() (r string, exists bool) {
 // OldPath returns the old "path" field's value of the Post entity.
 // If the Post object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PostMutation) OldPath(ctx context.Context) (v string, err error) {
+func (m *PostMutation) OldPath(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPath is only allowed on UpdateOne operations")
 	}
@@ -449,7 +449,7 @@ func (m *PostMutation) ReadLastReplyID() (r string, exists bool) {
 // OldReadLastReplyID returns the old "read_last_reply_id" field's value of the Post entity.
 // If the Post object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PostMutation) OldReadLastReplyID(ctx context.Context) (v string, err error) {
+func (m *PostMutation) OldReadLastReplyID(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldReadLastReplyID is only allowed on UpdateOne operations")
 	}
@@ -499,7 +499,7 @@ func (m *PostMutation) ReadLastReplyIndex() (r int, exists bool) {
 // OldReadLastReplyIndex returns the old "read_last_reply_index" field's value of the Post entity.
 // If the Post object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PostMutation) OldReadLastReplyIndex(ctx context.Context) (v int, err error) {
+func (m *PostMutation) OldReadLastReplyIndex(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldReadLastReplyIndex is only allowed on UpdateOne operations")
 	}
@@ -568,7 +568,7 @@ func (m *PostMutation) ReadLastReplyTime() (r time.Time, exists bool) {
 // OldReadLastReplyTime returns the old "read_last_reply_time" field's value of the Post entity.
 // If the Post object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PostMutation) OldReadLastReplyTime(ctx context.Context) (v time.Time, err error) {
+func (m *PostMutation) OldReadLastReplyTime(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldReadLastReplyTime is only allowed on UpdateOne operations")
 	}
@@ -617,7 +617,7 @@ func (m *PostMutation) MarkBanned() (r bool, exists bool) {
 // OldMarkBanned returns the old "mark_banned" field's value of the Post entity.
 // If the Post object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PostMutation) OldMarkBanned(ctx context.Context) (v bool, err error) {
+func (m *PostMutation) OldMarkBanned(ctx context.Context) (v *bool, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldMarkBanned is only allowed on UpdateOne operations")
 	}

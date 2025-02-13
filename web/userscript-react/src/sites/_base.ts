@@ -13,7 +13,21 @@ export interface ISiteMatcher {
    */
   mount(): string
 
-  buildPostViewData(): IStore['postViewData']
+  buildPostViewData(): IPostViewData
+}
+
+/**
+ * 楼层数据
+ */
+export interface IInlinePostData {
+  id: string
+  idx: number
+  date: Date
+  jq: JQuery<HTMLElement>
+}
+
+export type IPostViewData = IStore['postViewData'] & {
+  posts: IInlinePostData[]
 }
 
 export abstract class BaseSiteRule {

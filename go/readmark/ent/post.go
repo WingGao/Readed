@@ -26,17 +26,17 @@ type Post struct {
 	// Site holds the value of the "site" field.
 	Site string `json:"Site,omitempty"`
 	// Path holds the value of the "path" field.
-	Path string `json:"Path,omitempty"`
+	Path *string `json:"Path,omitempty"`
 	// 站内ID
 	Pid string `json:"Pid,omitempty"`
 	// ReadLastReplyID holds the value of the "read_last_reply_id" field.
-	ReadLastReplyID string `json:"ReadLastReplyID,omitempty"`
+	ReadLastReplyID *string `json:"ReadLastReplyID,omitempty"`
 	// 帖子内楼层
-	ReadLastReplyIndex int `json:"ReadLastReplyIndex,omitempty"`
+	ReadLastReplyIndex *int `json:"ReadLastReplyIndex,omitempty"`
 	// ReadLastReplyTime holds the value of the "read_last_reply_time" field.
-	ReadLastReplyTime time.Time `json:"ReadLastReplyTime,omitempty"`
+	ReadLastReplyTime *time.Time `json:"ReadLastReplyTime,omitempty"`
 	// MarkBanned holds the value of the "mark_banned" field.
-	MarkBanned   bool `json:"MarkBanned,omitempty"`
+	MarkBanned   *bool `json:"MarkBanned,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -102,7 +102,8 @@ func (po *Post) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field path", values[i])
 			} else if value.Valid {
-				po.Path = value.String
+				po.Path = new(string)
+				*po.Path = value.String
 			}
 		case post.FieldPid:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -114,25 +115,29 @@ func (po *Post) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field read_last_reply_id", values[i])
 			} else if value.Valid {
-				po.ReadLastReplyID = value.String
+				po.ReadLastReplyID = new(string)
+				*po.ReadLastReplyID = value.String
 			}
 		case post.FieldReadLastReplyIndex:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field read_last_reply_index", values[i])
 			} else if value.Valid {
-				po.ReadLastReplyIndex = int(value.Int64)
+				po.ReadLastReplyIndex = new(int)
+				*po.ReadLastReplyIndex = int(value.Int64)
 			}
 		case post.FieldReadLastReplyTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field read_last_reply_time", values[i])
 			} else if value.Valid {
-				po.ReadLastReplyTime = value.Time
+				po.ReadLastReplyTime = new(time.Time)
+				*po.ReadLastReplyTime = value.Time
 			}
 		case post.FieldMarkBanned:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field mark_banned", values[i])
 			} else if value.Valid {
-				po.MarkBanned = value.Bool
+				po.MarkBanned = new(bool)
+				*po.MarkBanned = value.Bool
 			}
 		default:
 			po.selectValues.Set(columns[i], values[i])
@@ -182,23 +187,33 @@ func (po *Post) String() string {
 	builder.WriteString("site=")
 	builder.WriteString(po.Site)
 	builder.WriteString(", ")
-	builder.WriteString("path=")
-	builder.WriteString(po.Path)
+	if v := po.Path; v != nil {
+		builder.WriteString("path=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("pid=")
 	builder.WriteString(po.Pid)
 	builder.WriteString(", ")
-	builder.WriteString("read_last_reply_id=")
-	builder.WriteString(po.ReadLastReplyID)
+	if v := po.ReadLastReplyID; v != nil {
+		builder.WriteString("read_last_reply_id=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("read_last_reply_index=")
-	builder.WriteString(fmt.Sprintf("%v", po.ReadLastReplyIndex))
+	if v := po.ReadLastReplyIndex; v != nil {
+		builder.WriteString("read_last_reply_index=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("read_last_reply_time=")
-	builder.WriteString(po.ReadLastReplyTime.Format(time.ANSIC))
+	if v := po.ReadLastReplyTime; v != nil {
+		builder.WriteString("read_last_reply_time=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("mark_banned=")
-	builder.WriteString(fmt.Sprintf("%v", po.MarkBanned))
+	if v := po.MarkBanned; v != nil {
+		builder.WriteString("mark_banned=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

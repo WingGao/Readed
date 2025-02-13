@@ -1,6 +1,6 @@
 addr: ":29000"
 mysql:
-  uri: "root:root@tcp(localhost:3306)/go_readmark?parseTime=true"
+  uri: "root:root@tcp(localhost:3306)/go_readmark?parseTime=true&loc=Asia%2FShanghai"
 redis:
   host: "localhost"
   port: 6379

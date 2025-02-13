@@ -24,7 +24,7 @@ export interface InlineObject {
      * @type {string}
      * @memberof InlineObject
      */
-    Username: string;
+    Account: string;
 }
 
 

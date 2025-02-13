@@ -235,7 +235,7 @@ func (pc *PostCreate) createSpec() (*Post, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := pc.mutation.Path(); ok {
 		_spec.SetField(post.FieldPath, field.TypeString, value)
-		_node.Path = value
+		_node.Path = &value
 	}
 	if value, ok := pc.mutation.Pid(); ok {
 		_spec.SetField(post.FieldPid, field.TypeString, value)
@@ -243,19 +243,19 @@ func (pc *PostCreate) createSpec() (*Post, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := pc.mutation.ReadLastReplyID(); ok {
 		_spec.SetField(post.FieldReadLastReplyID, field.TypeString, value)
-		_node.ReadLastReplyID = value
+		_node.ReadLastReplyID = &value
 	}
 	if value, ok := pc.mutation.ReadLastReplyIndex(); ok {
 		_spec.SetField(post.FieldReadLastReplyIndex, field.TypeInt, value)
-		_node.ReadLastReplyIndex = value
+		_node.ReadLastReplyIndex = &value
 	}
 	if value, ok := pc.mutation.ReadLastReplyTime(); ok {
 		_spec.SetField(post.FieldReadLastReplyTime, field.TypeTime, value)
-		_node.ReadLastReplyTime = value
+		_node.ReadLastReplyTime = &value
 	}
 	if value, ok := pc.mutation.MarkBanned(); ok {
 		_spec.SetField(post.FieldMarkBanned, field.TypeBool, value)
-		_node.MarkBanned = value
+		_node.MarkBanned = &value
 	}
 	return _node, _spec
 }
