@@ -19,7 +19,7 @@ function PostView() {
   const [loading,setLoading] = useState(true)
 
   useMount(async () => {
-    let req = matchedRules[0].buildPostViewData() as any
+    let req = await matchedRules[0].buildPostViewData() as any
     postViewDataRef.current = req
     req.PidList = [req.Pid]
     setLoading(true)
@@ -43,7 +43,7 @@ function PostView() {
   style={{width:220}}
   request={()=>toAntdRep(post)}
 >
-  <ProDescriptions.Item label="站内ID">{post?.Pid?`${post?.Pid} (ID:${post?.ID})`:"-"}</ProDescriptions.Item>
+  <ProDescriptions.Item label="站内ID">{post?.Pid?`${post?.Pid} (ID:${post?.ID ?? '-'})`:"-"}</ProDescriptions.Item>
   <ProDescriptions.Item dataIndex="UpdatedAt" label="更新时间" valueType="dateTime"  />
   <ProDescriptions.Item label="阅读楼层">{post?.ReadLastReplyIndex?`${post?.ReadLastReplyIndex}楼`:"-"} 
     <Button style={{marginLeft:10}} variant="filled" color="primary" size="small" onClick={async ()=>{

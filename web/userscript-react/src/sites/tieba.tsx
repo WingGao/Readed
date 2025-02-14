@@ -1,4 +1,4 @@
-import {BaseSiteRule, IInlinePostData, IPostViewData, ISiteMatcher} from "./_base";
+import {BaseSiteRule, IInlinePostData, IPostListViewData, IPostViewData, ISiteMatcher} from "./_base";
 import useAppStore, {AppViewPaths, IStore} from "../utils/store";
 import $ from 'jquery';
 import { TIME_DATE_REGEX } from "../utils/time";
@@ -7,16 +7,13 @@ const TieBaSite = 'tieba.baidu.com'
 
 const TiebaMatcher: ISiteMatcher = {
   hosts: [TieBaSite],
-  match(url: URL): boolean {
-    if (url.pathname.indexOf("/p/") >= 0) return true
-    return false;
+  matchPostView(url: URL): boolean {
+    return url.pathname.indexOf("/p/") >= 0
   },
-  mount() {
-    if (location.pathname.indexOf('/p/') >= 0) {
-      return AppViewPaths.POST
-    }
+  matchPostListView(url: URL): boolean {
+    return url.pathname.indexOf("/f") >= 0
   },
-  buildPostViewData(): IPostViewData {
+  async buildPostViewData(): Promise<IPostViewData> {
     const pid = location.pathname.match(/\/p\/(\d+)/)[1]
     // 获取楼层
     const posts: IInlinePostData[] = []
@@ -67,6 +64,23 @@ const TiebaMatcher: ISiteMatcher = {
     // debugger
     return {Site: TieBaSite, Pid: pid, posts}
   },
+  async buildPostListViewData(): Promise<IPostListViewData> {
+    const posts: IInlinePostData[] = []
+    $('#thread_list .j_thread_list').each((idx,ele)=>{
+      const $post = $(ele)
+      const rawPostData = $post.data('field')
+      if(rawPostData?.id == null) return // 可能是广告
+      const postData = {
+        id: rawPostData.id.toString(),
+        jq: $post
+      } as IInlinePostData
+      posts.push(postData)
+    })
+    return {
+      Site: TieBaSite,
+      posts
+    }
+  }
 }
 
 export class TiebaRule extends BaseSiteRule {

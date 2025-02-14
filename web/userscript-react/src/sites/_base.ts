@@ -1,3 +1,4 @@
+import { Post } from "@wingao/readmark-api";
 import {IStore} from "../utils/store";
 
 const hostMap = new Map<string, ISiteMatcher[]>()
@@ -6,14 +7,11 @@ const hostMap = new Map<string, ISiteMatcher[]>()
 export interface ISiteMatcher {
   hosts: string[]
 
-  match(url: URL): boolean
+  matchPostView(url: URL): boolean
+  matchPostListView(url: URL): boolean
 
-  /**
-   * 判断需要加载那个View
-   */
-  mount(): string
-
-  buildPostViewData(): IPostViewData
+  buildPostViewData(): Promise<IPostViewData>
+  buildPostListViewData(): Promise<IPostListViewData>
 }
 
 /**
@@ -24,9 +22,15 @@ export interface IInlinePostData {
   idx: number
   date: Date
   jq: JQuery<HTMLElement>
+  // onMount: ()=> void
+  serverData: Post|null
 }
 
 export type IPostViewData = IStore['postViewData'] & {
+  posts: IInlinePostData[]
+}
+
+export type IPostListViewData = IStore['postViewData'] & {
   posts: IInlinePostData[]
 }
 
@@ -50,5 +54,5 @@ export function registerRule(...rules: ISiteMatcher[]) {
 
 export function matchRules(urlStr: string) {
   const url = new URL(urlStr)
-  return hostMap.get(url.hostname).filter(r => r.match(url))
+  return hostMap.get(url.hostname).filter(r => r.matchPostView(url) || r.matchPostListView(url))
 }

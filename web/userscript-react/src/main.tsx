@@ -9,7 +9,7 @@ import {initApiClient} from "./api";
 import {notification} from "antd";
 import {useMount, useThrottle, useWhyDidYouUpdate} from "ahooks";
 import {matchRules} from './sites'
-import useAppStore from "./utils/store";
+import useAppStore, { AppViewPaths } from "./utils/store";
 
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(indexCss);
@@ -66,7 +66,12 @@ async function main(newUrl: string = window.location.href) {
         else reactRoot.render(<MyRawRoot matchedRules={matchedRules}/>);
     }
     matchedRules.forEach(rule => {
-        let view = rule.mount()
+        let view = null
+        if(rule.matchPostView(new URL(newUrl))) {
+            view = AppViewPaths.POST
+        } else if(rule.matchPostListView(new URL(newUrl))) {
+            view = AppViewPaths.POST_LIST
+        }
         if(view != null) useAppStore.setState({route: [view]})
     })
 }

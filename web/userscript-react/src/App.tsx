@@ -8,6 +8,7 @@ import PostView from "./views/PostView";
 import useAppStore, {AppViewPaths} from "./utils/store";
 import LoginView from "./views/LoginView";
 import { head } from 'lodash-es';
+import PostListView from './views/PostListView';
 
 
 function RouterApp(){
@@ -19,6 +20,7 @@ function RouterApp(){
   return <Routes>
   <Route path={AppViewPaths.LOGIN} element={<LoginView />} />
   <Route path={AppViewPaths.POST} element={<PostView />} />
+  <Route path={AppViewPaths.POST_LIST} element={<PostListView />} />
 </Routes>
 }
 function App() {
