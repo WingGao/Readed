@@ -75,7 +75,7 @@ async function main(newUrl: string = window.location.href) {
         if(view != null) useAppStore.setState({route: [view]})
     })
 }
-
+// @ts-ignore
 window.navigation.addEventListener("navigate", (event) => {
     // main(event.destination.url)
 })

@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/gofiber/fiber/v3/middleware/requestid"
 	"github.com/gofiber/fiber/v3/middleware/session"
+	"github.com/gofiber/fiber/v3/middleware/static"
 	"github.com/gofiber/storage/redis/v3"
 	"github.com/gofiber/utils/v2"
 	"readmark/config"
@@ -52,7 +53,7 @@ func main() {
 		},
 	})
 	app.Use(sessionMiddleware)
-
+	app.Use("/static", static.New(config.GlobalConfig.Static))
 	app.Get("/", func(c fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})

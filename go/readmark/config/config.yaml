@@ -1,4 +1,5 @@
 addr: ":29000"
+static: static
 mysql:
   uri: "root:root@tcp(localhost:3306)/go_readmark?parseTime=true&loc=Asia%2FShanghai"
 redis:

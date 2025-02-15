@@ -21,7 +21,9 @@ export default defineConfig({
         ],
         connect: [
           'localhost',
-          'localhost:29000'
+          'localhost:29000',
+          'rm.mac.suamo.art',
+          'rm.mac.suamo.art:8002'
         ],
         require: [
           // https://github.com/Tampermonkey/tampermonkey/issues/2215 All GM_xmlhttpRequest requests are serialized

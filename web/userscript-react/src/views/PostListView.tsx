@@ -54,7 +54,7 @@ const PostListView = () => {
             p.serverData = postMap[p.id]
         })
         postViewDataRef.current = data
-        if(config.scriptSimple) data.scriptSimple?.()
+        // if(config.scriptSimple) data.scriptSimple?.()
         setLoading(false)
     })
     useEffect(()=>{
