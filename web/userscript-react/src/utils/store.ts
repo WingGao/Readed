@@ -46,5 +46,6 @@ const useAppStore = create<IStore>((set) => ({
 
 export interface IConfig {
   hideBanned?: boolean
+  scriptSimple?: boolean
 }
 export default useAppStore

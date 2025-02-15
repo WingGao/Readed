@@ -22,16 +22,22 @@ export interface IInlinePostData {
   idx: number
   date: Date
   jq: JQuery<HTMLElement>
-  // onMount: ()=> void
-  serverData: Post|null
+  /**
+   * 挂载小组件的根元素,一般在帖子标题后面
+   */
+  jqWidgetRoot?: JQuery<HTMLElement>
+  serverData?: Post
 }
 
 export type IPostViewData = IStore['postViewData'] & {
   posts: IInlinePostData[]
+    // 简化页面
+    scriptSimple?: ()=>void
 }
 
 export type IPostListViewData = IStore['postViewData'] & {
   posts: IInlinePostData[]
+
 }
 
 export abstract class BaseSiteRule {

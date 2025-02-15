@@ -17,15 +17,16 @@ function PostView() {
   const {matchedRules} = useContext(UserContext)
   const [post,setPost] = useState<Post | null>(null)
   const [loading,setLoading] = useState(true)
+  const {config,setConfig} = useAppStore()
 
   useMount(async () => {
-    let req = await matchedRules[0].buildPostViewData() as any
+    let req = await matchedRules[0].buildPostViewData()
     postViewDataRef.current = req
-    req.PidList = [req.Pid]
     setLoading(true)
-    let rep = (await Api.apiPostSearchPost(req)).data.Data[0]
+    let rep = (await Api.apiPostSearchPost({Site:req.Site,PidList:[req.Pid]})).data.Data[0]
     // rep.MarkBanned = false
     setPost(defaultTo(rep,{Site: req.Site, Pid: req.Pid}))
+    if(config.scriptSimple) req.scriptSimple?.()
     setLoading(false)
     actionRef.current?.reload()
   })
@@ -61,6 +62,9 @@ function PostView() {
   <ProDescriptions.Item label="楼层时间" dataIndex="ReadLastReplyTime" valueType="dateTime" />
   <ProDescriptions.Item label="是否屏蔽"><Switch checked={post?.MarkBanned} onChange={async (v)=>{
     await updatePost({MarkBanned:v})
+  }} /></ProDescriptions.Item>
+  <ProDescriptions.Item label="开启简化"><Switch checked={config.scriptSimple} onChange={async (v)=>{
+    setConfig({scriptSimple:v})
   }} /></ProDescriptions.Item>
 </ProDescriptions>  </ConfigProvider>
 }

@@ -4,6 +4,31 @@ import $ from 'jquery';
 import { TIME_DATE_REGEX } from "../utils/time";
 
 const TieBaSite = 'tieba.baidu.com'
+/**
+ * 简化帖子
+ */
+function postSimple(){
+  const cssKey = 'rm-tieba'
+  if($("head").find(`#${cssKey}`).length==0){
+    $("head").append(`<style id="${cssKey}">
+.p_content {
+    min-height: 0!important;
+}  
+</style>`)
+  }
+  $('#j_p_postlist .j_l_post').each((idx,ele)=>{
+    const $post = $(ele)
+    $post.find('.share_btn_wrapper').remove()
+    $post.find('.post-foot-send-gift-container').remove()
+    const $content = $post.find('.p_content')
+    $content.find('cc > br').remove()
+    $content.find('cc').next('br').remove()
+    // 发帖人
+    const $author = $post.find('.p_author')
+    $author.children(':not(.d_name)').remove()
+  })
+  $('.right_section ').remove()
+}
 
 const TiebaMatcher: ISiteMatcher = {
   hosts: [TieBaSite],
@@ -62,7 +87,7 @@ const TiebaMatcher: ISiteMatcher = {
       posts.push(postData)
     })
     // debugger
-    return {Site: TieBaSite, Pid: pid, posts}
+    return {Site: TieBaSite, Pid: pid, posts,scriptSimple:postSimple}
   },
   async buildPostListViewData(): Promise<IPostListViewData> {
     const posts: IInlinePostData[] = []
@@ -72,7 +97,8 @@ const TiebaMatcher: ISiteMatcher = {
       if(rawPostData?.id == null) return // 可能是广告
       const postData = {
         id: rawPostData.id.toString(),
-        jq: $post
+        jq: $post,
+        jqWidgetRoot: $post.find('.threadlist_title')
       } as IInlinePostData
       posts.push(postData)
     })
