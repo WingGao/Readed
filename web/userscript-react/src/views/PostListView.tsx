@@ -1,7 +1,7 @@
 import { useMount } from "ahooks"
 import { useContext, useEffect, useRef, useState } from "react"
 import { UserContext } from "../utils"
-import { IInlinePostData, IPostViewData } from "../sites/_base"
+import {IInlinePostData, IPostListViewData, IPostViewData} from "../sites/_base"
 import Api, { Post } from "@wingao/readmark-api"
 import { Button, ConfigProvider, Switch, Tag, Tooltip } from "antd"
 import { ProDescriptions } from "@ant-design/pro-components"
@@ -12,11 +12,12 @@ import ReactDOM from "react-dom/client"
 import { mountAppend, mountPrepend } from "../utils/react"
 import dayjs from "dayjs"
 import { FMT_NORMAL_DATETIME } from "../utils/time"
+import {sleep} from "ahooks/lib/utils/testingHelpers";
 
-
+const POST_WIDGET_CLASS = 'flag-post-widget'
 const PostWidget = ({site,post}:{site:string,post:IInlinePostData})=>{
     const [banned,setBanned] = useState(false)
-    return <><Button size="small" danger onClick={()=>{        
+    return <><Button className={"rm-widget-ban"} size="small" danger onClick={()=>{
         if(banned){
             post.jq.css('background-color','')
         }else{
@@ -35,7 +36,7 @@ const PostWidget = ({site,post}:{site:string,post:IInlinePostData})=>{
  * 挂载帖子小组件
  */
 function mountPostWidget(site:string,post:IInlinePostData){
-    mountPrepend(post.jqWidgetRoot,`<span class="flag-post-widget"></span>`,post.id,<PostWidget site={site} post={post} />)
+    mountPrepend(post.jqWidgetRoot,`<span class="${POST_WIDGET_CLASS}"></span>`,post.id,<PostWidget site={site} post={post} />)
 }
 
 const PostListView = () => {
@@ -45,7 +46,14 @@ const PostListView = () => {
     const {config,setConfig} = useAppStore()
 
     useMount(async ()=>{
-        const data = await matchedRules[0].buildPostListViewData()       
+        let data:IPostListViewData //= await matchedRules[0].buildPostListViewData()
+        while(true){
+            data = await matchedRules[0].buildPostListViewData()
+            if(data.posts[0].jq.find(`.${POST_WIDGET_CLASS}`).length == 0) { //确保没有注册
+                break
+            }
+            await sleep(200)
+        }
         setLoading(true)
         const req = {Site: data.Site, PidList: data.posts.map(p=>p.id)}
         const rep = (await Api.apiPostSearchPost(req)).data.Data

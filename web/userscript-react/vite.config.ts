@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
+import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
-import monkey, { cdn } from 'vite-plugin-monkey';
+import monkey, {cdn} from 'vite-plugin-monkey';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,6 +15,10 @@ export default defineConfig({
         name: 'ReadMark',
         icon: 'https://vitejs.dev/logo.svg',
         namespace: 'npm/vite-plugin-monkey',
+        updateURL: 'https://rm.mac.suamo.art:8002/static/readmark-userscript-react.user.js',
+        downloadURL: 'https://rm.mac.suamo.art:8002/static/readmark-userscript-react.user.js',
+        author: 'WingGao',
+        version: '0.0.2',
         match: [
           // '*://*/*'
           'https://tieba.baidu.com/*'
@@ -28,7 +32,8 @@ export default defineConfig({
         require: [
           // https://github.com/Tampermonkey/tampermonkey/issues/2215 All GM_xmlhttpRequest requests are serialized
           'https://raw.githubusercontent.com/Tampermonkey/utils/refs/heads/main/requires/gh_2215_make_GM_xhr_more_parallel_again.js',
-        ]
+        ],
+        grant: ['GM_xmlhttpRequest'],
       },
       build: {
         externalGlobals: {
