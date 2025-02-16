@@ -1,4 +1,4 @@
-import { Post } from "@wingao/readmark-api";
+import {Post} from "@wingao/readmark-api";
 import {IStore} from "../utils/store";
 
 const hostMap = new Map<string, ISiteMatcher[]>()
@@ -8,9 +8,11 @@ export interface ISiteMatcher {
   hosts: string[]
 
   matchPostView(url: URL): boolean
+
   matchPostListView(url: URL): boolean
 
   buildPostViewData(): Promise<IPostViewData>
+
   buildPostListViewData(): Promise<IPostListViewData>
 }
 
@@ -31,8 +33,8 @@ export interface IInlinePostData {
 
 export type IPostViewData = IStore['postViewData'] & {
   posts: IInlinePostData[]
-    // 简化页面
-    scriptSimple?: ()=>void
+  // 简化页面
+  scriptSimple?: () => void
 }
 
 export type IPostListViewData = IStore['postViewData'] & {

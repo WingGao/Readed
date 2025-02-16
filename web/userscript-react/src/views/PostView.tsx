@@ -10,7 +10,10 @@ import { IPostViewData } from "../sites/_base";
 import { isElementInViewport } from "../utils/jq";
 import dayjs from "dayjs";
 import { defaultTo } from "lodash-es";
+import {sleep} from "ahooks/lib/utils/testingHelpers";
 
+const POST_VIEW_PATCH_CLASS = 'rm-post-view-patch'
+let lastId = ""
 function PostView() {
   const actionRef = useRef<ProDescriptionsActionType>();
   const postViewDataRef = useRef<IPostViewData>()
@@ -20,13 +23,21 @@ function PostView() {
   const {config,setConfig} = useAppStore()
 
   useMount(async () => {
-    let req = await matchedRules[0].buildPostViewData()
-    postViewDataRef.current = req
+    let data :IPostViewData
+    while(true){
+      data = await matchedRules[0].buildPostViewData()
+      if(data.posts[0].id != lastId) { //确保没有注册
+        break
+      }
+      await sleep(200)
+    }
+    lastId=data.posts[0].id
     setLoading(true)
-    let rep = (await Api.apiPostSearchPost({Site:req.Site,PidList:[req.Pid]})).data.Data[0]
+    let rep = (await Api.apiPostSearchPost({Site:data.Site,PidList:[data.Pid]})).data.Data[0]
     // rep.MarkBanned = false
-    setPost(defaultTo(rep,{Site: req.Site, Pid: req.Pid}))
-    if(config.scriptSimple) req.scriptSimple?.()
+    setPost(defaultTo(rep,{Site: data.Site, Pid: data.Pid}))
+    if(config.scriptSimple) data.scriptSimple?.()
+    postViewDataRef.current = data
     setLoading(false)
     actionRef.current?.reload()
   })
