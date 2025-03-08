@@ -30,13 +30,17 @@ function postSimple(){
   $('.right_section ').remove()
 }
 
-const TiebaMatcher: ISiteMatcher = {
+function isSearchPage(url: URL){
+  return url.pathname == "/f/search/res"
+}
+
+const TiebaMatcher: ISiteMatcher  = {
   hosts: [TieBaSite],
   matchPostView(url: URL): boolean {
     return url.pathname.indexOf("/p/") >= 0
   },
   matchPostListView(url: URL): boolean {
-    return url.pathname.indexOf("/f") >= 0
+    return url.pathname=="/f" || isSearchPage(url)
   },
   async buildPostViewData(): Promise<IPostViewData> {
     const pid = location.pathname.match(/\/p\/(\d+)/)[1]
@@ -75,7 +79,7 @@ const TiebaMatcher: ISiteMatcher = {
       if(rawPostData?.content == null) return // 可能是广告
       const postData = {
         id: rawPostData.content.post_id.toString(),
-        idx: rawPostData.content.post_no,      
+        idx: rawPostData.content.post_no,
         jq: $post
       } as IInlinePostData
       $post.find('.tail-info').each((idx1,v)=>{
@@ -91,17 +95,30 @@ const TiebaMatcher: ISiteMatcher = {
   },
   async buildPostListViewData(): Promise<IPostListViewData> {
     const posts: IInlinePostData[] = []
-    $('#thread_list .j_thread_list').each((idx,ele)=>{
-      const $post = $(ele)
-      const rawPostData = $post.data('field')
-      if(rawPostData?.id == null) return // 可能是广告
-      const postData = {
-        id: rawPostData.id.toString(),
-        jq: $post,
-        jqWidgetRoot: $post.find('.threadlist_title')
-      } as IInlinePostData
-      posts.push(postData)
-    })
+    if(isSearchPage(new URL(location.href))){ // 搜索页
+      $('.s_post_list .p_title').each((idx,ele)=>{
+        const $post = $(ele)
+        const postData = {
+          id: $post.find('a').data('tid').toString(),
+          jq: $post,
+          jqWidgetRoot: $post
+        } as IInlinePostData
+        posts.push(postData)
+      })
+    }else {
+      // 贴吧页
+      $('#thread_list .j_thread_list').each((idx, ele) => {
+        const $post = $(ele)
+        const rawPostData = $post.data('field')
+        if (rawPostData?.id == null) return // 可能是广告
+        const postData = {
+          id: rawPostData.id.toString(),
+          jq: $post,
+          jqWidgetRoot: $post.find('.threadlist_title')
+        } as IInlinePostData
+        posts.push(postData)
+      })
+    }
     return {
       Site: TieBaSite,
       posts

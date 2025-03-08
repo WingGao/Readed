@@ -7,8 +7,16 @@ const hostMap = new Map<string, ISiteMatcher[]>()
 export interface ISiteMatcher {
   hosts: string[]
 
+  /**
+   * 判断是否匹配帖子详情
+   * @param url
+   */
   matchPostView(url: URL): boolean
 
+  /**
+   * 判断是否匹配帖子列表
+   * @param url
+   */
   matchPostListView(url: URL): boolean
 
   buildPostViewData(): Promise<IPostViewData>

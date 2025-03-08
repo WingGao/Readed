@@ -18,7 +18,7 @@ export default defineConfig({
         updateURL: 'https://rm.mac.suamo.art:8002/static/readmark-userscript-react.user.js',
         downloadURL: 'https://rm.mac.suamo.art:8002/static/readmark-userscript-react.user.js',
         author: 'WingGao',
-        version: '0.0.3',
+        version: '0.0.4',
         match: [
           // '*://*/*'
           'https://tieba.baidu.com/*'

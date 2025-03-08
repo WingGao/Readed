@@ -81,6 +81,11 @@ async function main(newUrl: string = window.location.href) {
 
 // @ts-ignore
 window.navigation.addEventListener("navigate", (event) => {
+  console.log('navigate', event)
+  if(event.navigationType == 'push'){
+    main()
+  }
+  return
   event.intercept({
     async handler(){
       main()
